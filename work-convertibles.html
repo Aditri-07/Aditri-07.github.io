@@ -50,6 +50,91 @@ li .star{margin-top:.3em}
 html,body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23dc3b2f' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23dc3b2f'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,auto}
 a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23a8231a' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23a8231a'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,pointer}
 
+
+/* ---- interactive tail-risk lab: ink-on-paper charts, red = the true (Student-t) world ---- */
+:root{ --band:rgba(22,21,20,.10); --red-wash:rgba(220,59,47,.14); --grid:rgba(22,21,20,.10); --axis:#8a847e; }
+.page{gap:30px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);
+  padding:10px 0;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center}
+.ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.ctl .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ctl output{font-family:var(--mono);font-size:13px;font-weight:500;min-width:3.2ch;font-variant-numeric:tabular-nums}
+.chips{display:inline-flex;gap:4px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:12px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:2px 10px;line-height:1.5}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip:hover{border-color:var(--red);color:var(--red)} .chip[aria-pressed="true"]:hover{color:var(--paper);background:var(--red);border-color:var(--red)}
+input[type=range]{accent-color:var(--red);width:150px;max-width:40vw}
+.btn{font-family:var(--sans);font-weight:800;font-size:13.5px;letter-spacing:-.01em;background:var(--ink);color:var(--paper);border:0;border-radius:2px;padding:6px 12px}
+.btn:hover{background:var(--red)}
+.lab{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.lab h2{margin:0;font-family:var(--sans);font-weight:800;font-size:clamp(26px,3.6vw,38px);letter-spacing:-.045em;line-height:1.05;display:flex;gap:.35em;align-items:baseline;text-wrap:balance}
+.lab h2 .star{width:.6em;height:.6em;flex:none}
+.lab .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.lab p{margin:0;max-width:64ch}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.read div{padding:10px 12px 10px 0;display:flex;flex-direction:column;gap:2px;min-width:0}
+.read b{font-family:var(--sans);font-weight:800;font-size:clamp(20px,2.6vw,26px);letter-spacing:-.04em;line-height:1.1;font-variant-numeric:tabular-nums}
+.read span{font-size:12.5px;color:var(--ink-soft)}
+.read .hot b{color:var(--red)}
+.plot{position:relative;width:100%;min-width:0}
+.plot svg{display:block;width:100%;height:auto;overflow:hidden}
+.plot text{font-family:var(--mono);font-size:10.5px;fill:var(--ink-soft)}
+.plot .lbl{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:-.01em}
+.plot .lbl.red{fill:var(--red)} .plot .lbl.ink{fill:var(--ink)}
+.cap{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);max-width:80ch;margin:0}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11.5px;line-height:1.5;padding:6px 9px;border-left:3px solid var(--red);white-space:nowrap;z-index:3;transform:translate(12px,-50%)}
+.tip.flip{transform:translate(calc(-100% - 12px),-50%)}
+.steps{list-style:none;counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;max-width:none;border-top:1px solid var(--rule)}
+.steps li{counter-increment:s;display:flex;flex-direction:column;gap:6px;padding:12px 14px 12px 0;border-bottom:1px solid var(--rule)}
+.steps li::before{content:counter(s);font-family:var(--display);font-weight:900;color:var(--red);font-size:28px;line-height:1}
+.steps code{font-family:var(--mono);font-size:12.5px;background:var(--paper-2);padding:1px 5px;border-radius:2px;overflow-wrap:anywhere}
+.steps span{font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid currentColor;width:max-content}
+.pill.ok{color:var(--ink)} .pill.miss{color:var(--red)}
+.busy{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);min-height:1.5em}
+.tbl{overflow-x:auto;border-top:2px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px 8px 0;text-align:right;border-bottom:1px solid var(--rule);font-size:14px}
+th{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+th:first-child,td:first-child{text-align:left}
+tr.hl td{color:var(--red);font-weight:800}
+tbody tr:hover td{background:var(--paper-2)}
+@media (max-width:560px){ .bar{gap:8px 16px} input[type=range]{width:110px} }
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 26px;min-width:0}
+.two.wide{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+@media (max-width:760px){.two.wide{grid-template-columns:minmax(0,1fr)}}
+code.eq{font-family:var(--mono);font-size:13px;background:var(--paper-2);padding:1px 6px;border-radius:2px;white-space:nowrap}
+.ivgrid{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 28px;align-items:start}
+@media (max-width:640px){.ivgrid{grid-template-columns:minmax(0,1fr)}}
+.ivin{display:flex;flex-direction:column;gap:10px}
+.ivout{display:flex;flex-direction:column;gap:12px;min-width:0}
+label.f{display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft)}
+label.f input,.cbin input[type=number]{font:inherit;font-family:var(--mono);font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--ink);border-radius:2px;padding:6px 8px;width:100%}
+label.f input:focus-visible{outline:2px solid var(--red);outline-offset:1px}
+ol.newton{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:12px;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:4px 18px;max-width:none}
+ol.newton li{display:block}
+.regtab{display:flex;flex-direction:column;gap:10px;min-width:0}
+.regtab table{min-width:0}
+.regtab td,.regtab th{font-size:13px}
+td.sig,dd.sig{color:var(--ink);font-weight:800}
+dd.bad{color:var(--red)}
+.verdict{margin:0;font-family:var(--mono);font-size:12.5px;padding:3px 10px;border:1px solid currentColor;border-radius:999px;width:max-content;max-width:100%}
+.verdict.ok{color:var(--ink)} .verdict.miss{color:var(--red)}
+dl.diag{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:0;border-top:1px solid var(--rule)}
+dl.diag div{padding:7px 8px 7px 0;border-bottom:1px solid var(--rule)}
+dl.diag dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+dl.diag dd{margin:2px 0 0;font-size:15px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ctl output{min-width:4ch}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-2px;border-radius:50%}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.terms div{padding:8px 10px 8px 0;display:flex;flex-direction:column;gap:1px;min-width:0}
+.terms b{font-size:17px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.terms span{font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.04em}
+.node{cursor:inherit}
+.nodeinfo{font-family:var(--mono);font-size:12.5px}
+ul.lims{list-style:disc;padding-left:1.2em;display:block;max-width:66ch}ul.lims li{display:list-item;margin:0 0 8px}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <filter id="rough" x="-5%" y="-10%" width="110%" height="120%">
@@ -62,18 +147,76 @@ a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csv
   <symbol id="spark" viewBox="0 0 20 20"><path d="M10 0 L11.6 8.4 L20 10 L11.6 11.6 L10 20 L8.4 11.6 L0 10 L8.4 8.4 Z"/></symbol>
 </svg>
 <main class="page">
-  <div class="top"><a href="index.html">← aDiTrI</a><span>01 / 08</span></div>
+  <div class="top"><a href="index.html">← aDiTrI</a><span>08 / 08</span></div>
   <header>
-    <div class="eyebrow"><svg class="star" width="0.8em" height="0.8em" aria-hidden="true"><use href="#spark"/></svg>derivatives pricing</div>
+    <div class="eyebrow"><svg class="star" width="0.8em" height="0.8em" aria-hidden="true"><use href="#spark"/></svg>convertible bonds</div>
     <h1 class="rough">Convertible Bond Credit Treatment</h1>
   </header>
-  <div class="tags"><span class="tag">Binomial lattice</span><span class="tag">Credit</span><span class="tag">Python</span></div>
-  <p class="lede">When does the credit treatment of a convertible actually change its price? A recombining binomial lattice prices vanilla U.S. convertibles two ways and measures where they disagree as a function of moneyness.</p>
-  <div class="figs"><div class="fig"><b>8.5%</b><span>peak pricing divergence, at S₀ = 70</span></div><div class="fig"><b>−0.88%</b><span>CS01 under Tsiveriotis–Fernandes</span></div><div class="fig"><b>−2.36%</b><span>CS01 under a single risky rate</span></div></div>
-  <ul><li><svg class="star" width="0.85em" height="0.85em" aria-hidden="true"><use href="#spark"/></svg><span>Single risky discount rate: the whole bond value is discounted at the risk-free rate plus the credit spread at every node.</span></li><li><svg class="star" width="0.85em" height="0.85em" aria-hidden="true"><use href="#spark"/></svg><span>Tsiveriotis–Fernandes: value is split into a cash-only part, discounted with credit, and an equity part, discounted risk-free.</span></li><li><svg class="star" width="0.85em" height="0.85em" aria-hidden="true"><use href="#spark"/></svg><span>The gap is largest where conversion is uncertain, which is exactly where a desk&#x27;s credit sensitivity matters most.</span></li></ul>
+  <div class="tags"><span class="tag">Binomial lattice</span><span class="tag">Tsiveriotis–Fernandes</span><span class="tag">Credit spread</span><span class="tag">Greeks</span><span class="tag">Python</span></div>
+  <p class="lede">A convertible is a bond and an option on the issuer&#x27;s equity in one security, and the two halves carry different default risk. This project prices vanilla U.S. convertibles on a recombining binomial lattice under two credit treatments and measures where, and by how much, they disagree. The lattice below is the repository&#x27;s pricer ported to your browser; at the base case it reproduces the repo&#x27;s numbers to the cent.</p>
+  <div class="figs"><div class="fig"><b>≈ 8.5%</b><span>peak TF vs single-rate price gap, around S₀ = 70–80, well past the par crossover at 50</span></div><div class="fig"><b>−2.36% vs −0.88%</b><span>CS01 single-rate vs TF at S₀ = 75: the single rate overstates credit risk</span></div><div class="fig"><b>300</b><span>lattice steps; prices stable from 150 → 300 steps</span></div><div class="fig"><b>5 / 5</b><span>limiting-case checks pass (bond floor, conversion-ratio delta, zero-spread collapse)</span></div></div>
+
+  <section class="lab" aria-labelledby="h-terms">
+    <span class="kicker">The instrument</span>
+    <h2 id="h-terms"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Base case</h2>
+    <div class="terms"><div><b>5 years</b><span>maturity</span></div><div><b>4% s.a.</b><span>coupon, face 100</span></div><div><b>2.0</b><span>conversion ratio · price $50</span></div><div><b>4.5%</b><span>risk-free rate</span></div><div><b>300 bp</b><span>flat issuer spread</span></div><div><b>35%</b><span>equity volatility</span></div></div>
+    <p>At every node the holder takes the larger of converting (ratio × share price) and holding. Holding is worth the discounted expected value of the next step plus any coupon. The question is what discount rate &quot;discounted&quot; means.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-lat">
+    <span class="kicker">The lattice</span>
+    <h2 id="h-lat"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Inside the tree</h2>
+    <p>Each node is a share price on the Cox–Ross–Rubinstein tree, u = e<sup>σ√Δt</sup>, d = 1/u, risk-neutral p = (e<sup>rΔt</sup> − d)/(u − d). Under Tsiveriotis–Fernandes each node carries two values: the cash-only part (COCB) owed by the issuer, and the equity-linked part (COTV). The ring shows the split. Hover or tap a node.</p>
+    <div class="ctl"><span class="k">Model</span><span class="chips" id="mdChips"><button class="chip" type="button" data-md="tf" aria-pressed="true">Tsiveriotis–Fernandes</button><button class="chip" type="button" data-md="single">single risky rate</button></span>
+      <label class="k" for="latS">S₀</label><input id="latS" type="range" min="20" max="110" step="1" value="50"><output id="latSOut" for="latS"></output></div>
+    <div class="legend" id="latLegend"></div>
+    <div class="plot" id="pLat"></div>
+    <div class="read nodeinfo" id="nodeRead"></div>
+    <p class="cap">Display tree: 10 steps of 6 months over the bond&#x27;s life, so you can see individual decisions. All prices elsewhere on this page use 300 steps.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-tf">
+    <span class="kicker">Backward induction</span>
+    <h2 id="h-tf"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Two discount rates, one decision</h2>
+    <ol class="steps">
+      <li><span>At maturity, convert if it beats redemption:</span><code>COTV = c·S_T if c·S_T &gt; F + cpn, else COCB = F + cpn</code></li>
+      <li><span>Step back. Cash the issuer owes is discounted with credit; equity the holder would receive is not:</span><code>COCB = e^(−(r+s)Δt)·E[COCB′] + cpn<br>COTV = e^(−rΔt)·E[COTV′]</code></li>
+      <li><span>If converting now is worth more than holding, all value moves to the equity leg:</span><code>if c·S &gt; COCB + COTV: COTV = c·S, COCB = 0</code></li>
+      <li><span>Price = COCB + COTV at the root. The single-rate model skips the split and discounts everything with credit:</span><code>V = max(c·S, e^(−(r+s)Δt)·E[V′] + cpn)</code></li>
+    </ol>
+  </section>
+
+  <section class="lab" aria-labelledby="h-div">
+    <span class="kicker">Pricing divergence</span>
+    <h2 id="h-div"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Where the credit treatment matters</h2>
+    <p>Deep out of the money, both models price a risky bond. Deep in the money, both price equity. In between, the single rate charges credit on value that will most likely be paid in shares. The gap peaks past the at-the-money point, because the chance of not converting persists well beyond the par crossover at this maturity and volatility.</p>
+    <div class="ctl"><label class="k" for="spr">Credit spread</label><input id="spr" type="range" min="0" max="800" step="25" value="300"><output id="sprOut" for="spr"></output>
+      <label class="k" for="vol">Volatility</label><input id="vol" type="range" min="15" max="60" step="1" value="35"><output id="volOut" for="vol"></output>
+      <button class="btn" type="button" id="cbReset">Base case</button></div>
+    <div class="read" id="divRead"></div>
+    <div class="plot" id="pPx"></div>
+    <div class="plot" id="pDiv"></div>
+    <p class="cap">Top: convertible price under each treatment against the conversion value and the straight-bond floor (coupons and face discounted at r + s). Bottom: TF minus single-rate, as a percentage of the single-rate price. 300-step lattice, recomputed as you move the sliders. The repository&#x27;s coarser sweep reports 8.50% at S₀ = 70; on this finer $2.50 grid the peak reads 8.6% at S₀ = 75. Binomial prices oscillate by a few tenths of a point between neighbouring spots (nodes shift relative to the conversion boundary), so read the peak as ≈ 8.5% around S₀ = 70–80.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-gk">
+    <span class="kicker">Risk</span>
+    <h2 id="h-gk"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Delta and CS01 by moneyness</h2>
+    <p>Delta by central finite difference (±0.50 in S₀); CS01 as the price change for a +100 bp spread bump. Deep in the money, the single-rate CS01 is exactly zero because conversion wins at every node, while TF keeps a small residual sensitivity from paths that never convert.</p>
+    <div class="tbl"><table id="gkTbl"></table></div>
+    <p class="cap">Recomputed live at 300 steps for the current spread and volatility. At the base case this matches cs01_sensitivity.csv in the repository.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-lim">
+    <span class="kicker">Scope</span>
+    <h2 id="h-lim"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Known simplifications</h2>
+    <ul class="lims"><li>Flat credit spread and flat volatility: no term structure, no skew.</li><li>American conversion only; no issuer call or holder put, which real convertibles usually have and which would cap the upside.</li><li>Coupons mapped to the nearest lattice step rather than exact day counts.</li><li>The stock follows a risk-free drift and does not jump on default; only discounting differs between treatments, the standard TF simplification.</li><li>Magnitudes are specific to the base case; the shape of the divergence curve is the result.</li></ul>
+  </section>
+
   <div class="links"><a class="out" href="https://github.com/Aditri-07/Convertible-Bond-Valuation-Risk-Analytics">repo ↗</a></div>
-  <nav class="nav" aria-label="More projects"><a href="work-vol-trading.html">← volatility trading</a><a href="vol-surface.html">volatility surfaces →</a></nav>
+  <nav class="nav" aria-label="More projects"><a href="work-prediction-markets.html">← prediction markets</a><a href="work-vol-trading.html">derivatives pricing →</a></nav>
 </main>
+
 <script>
 (function(){
   function shake(el){ if(!el) return; el.classList.remove("shaking"); void el.getBoundingClientRect(); el.classList.add("shaking"); }
@@ -83,5 +226,212 @@ a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csv
     s.addEventListener("pointerdown",()=>shake(s));
   });
 })();
+</script>
+<script>
+/* ---- shared chart kit + stats (inlined into each page) ---- */
+const K = (function(){
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){ const n=document.createElementNS(NS,tag); for(const k in attrs) n.setAttribute(k,attrs[k]); if(text!=null) n.textContent=text; if(parent) parent.appendChild(n); return n; }
+function frame(host,h,m){ host.querySelectorAll("svg,.tip").forEach(n=>n.remove());
+  const w=Math.max(280,host.clientWidth||700), svg=el("svg",{viewBox:`0 0 ${w} ${h}`,width:w,height:h,role:"img"},host);
+  const tip=document.createElement("div"); tip.className="tip"; tip.hidden=true; host.appendChild(tip);
+  m=m||{l:50,r:16,t:14,b:32}; return {svg,w,h,m,tip,iw:w-m.l-m.r,ih:h-m.t-m.b}; }
+const lin=(d0,d1,r0,r1)=>v=>r0+(v-d0)/(d1-d0)*(r1-r0);
+function path(pts){ let s=""; for(const p of pts){ if(!isFinite(p[0])||!isFinite(p[1])) continue; s+=(s?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1); } return s; }
+function pt(f,ev){ const b=f.svg.getBoundingClientRect(), s=f.w/b.width; return [(ev.clientX-b.left)*s,(ev.clientY-b.top)*s,s]; }
+function tip(f,px,py,html){ const b=f.svg.getBoundingClientRect(), s=f.w/b.width; f.tip.innerHTML=html; f.tip.hidden=false;
+  f.tip.style.left=(px/s)+"px"; f.tip.style.top=(py/s)+"px"; f.tip.classList.toggle("flip",px>f.w*0.55); }
+function hover(f,fn){ const r=el("rect",{x:f.m.l,y:f.m.t,width:f.iw,height:f.ih,fill:"transparent"},f.svg);
+  const cross=el("line",{y1:f.m.t,y2:f.h-f.m.b,stroke:"var(--ink)","stroke-dasharray":"2 3",visibility:"hidden","pointer-events":"none"},f.svg);
+  const mv=ev=>{ const [px,py]=pt(f,ev); const o=fn(px,py); if(!o){ lv(); return; }
+    const x=o.x??px; cross.setAttribute("x1",x); cross.setAttribute("x2",x); cross.setAttribute("visibility",o.noCross?"hidden":"visible"); tip(f,x,py,o.html); };
+  const lv=()=>{ f.tip.hidden=true; cross.setAttribute("visibility","hidden"); };
+  r.addEventListener("pointermove",mv); r.addEventListener("pointerdown",mv); r.addEventListener("pointerleave",lv); return r; }
+function axisX(f,x,ticks,fmt,label){ const y=f.h-f.m.b; el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:y,y2:y,stroke:"var(--ink)"},f.svg);
+  ticks.forEach(v=>{ const px=x(v); el("line",{x1:px,x2:px,y1:y,y2:y+4,stroke:"var(--ink)"},f.svg); el("text",{x:px,y:y+16,"text-anchor":"middle"},f.svg,fmt(v)); });
+  if(label) el("text",{x:f.w-f.m.r,y:f.h-3,"text-anchor":"end"},f.svg,label); }
+function axisY(f,y,ticks,fmt,label){ ticks.forEach(v=>{ const py=y(v); el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:py,y2:py,stroke:"var(--grid)"},f.svg); el("text",{x:f.m.l-6,y:py+3.5,"text-anchor":"end"},f.svg,fmt(v)); });
+  if(label) el("text",{x:f.m.l-6,y:f.m.t-4,"text-anchor":"end"},f.svg,label); }
+function nice(lo,hi,n){ const span=hi-lo||1, raw=span/(n||5), mag=Math.pow(10,Math.floor(Math.log10(raw))), st=[1,2,2.5,5,10].map(s=>s*mag).find(s=>s>=raw)||raw;
+  const out=[]; for(let v=Math.ceil(lo/st)*st; v<=hi+1e-9; v+=st) out.push(+v.toFixed(10)); return out; }
+function label(f,x,y,txt,cls,anchor){ return el("text",{x,y,"text-anchor":anchor||"start",class:"lbl "+(cls||"ink")},f.svg,txt); }
+/* stats */
+function lgamma(x){ const g=7,c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+  if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x); x-=1; let a=c[0]; const t=x+g+0.5; for(let i=1;i<9;i++) a+=c[i]/(x+i); return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(a); }
+function betacf(a,b,x){ let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap; if(Math.abs(d)<1e-300)d=1e-300; d=1/d; let h=d;
+  for(let m=1;m<=300;m++){ const m2=2*m; let aa=m*(b-m)*x/((qam+m2)*(a+m2)); d=1+aa*d; if(Math.abs(d)<1e-300)d=1e-300; c=1+aa/c; if(Math.abs(c)<1e-300)c=1e-300; d=1/d; h*=d*c;
+    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2)); d=1+aa*d; if(Math.abs(d)<1e-300)d=1e-300; c=1+aa/c; if(Math.abs(c)<1e-300)c=1e-300; d=1/d; const del=d*c; h*=del; if(Math.abs(del-1)<3e-14) break; } return h; }
+function ibeta(a,b,x){ if(x<=0) return 0; if(x>=1) return 1; const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));
+  return x<(a+1)/(a+b+2)? bt*betacf(a,b,x)/a : 1-bt*betacf(b,a,1-x)/b; }
+function gammaP(a,x){ if(x<=0) return 0; if(x<a+1){ let ap=a,sum=1/a,del=sum; for(let n=0;n<500;n++){ ap++; del*=x/ap; sum+=del; if(Math.abs(del)<Math.abs(sum)*1e-14) break; } return sum*Math.exp(-x+a*Math.log(x)-lgamma(a)); }
+  let b=x+1-a,c=1e300,d=1/b,h=d; for(let i=1;i<500;i++){ const an=-i*(i-a); b+=2; d=an*d+b; if(Math.abs(d)<1e-300)d=1e-300; c=b+an/c; if(Math.abs(c)<1e-300)c=1e-300; d=1/d; const del=d*c; h*=del; if(Math.abs(del-1)<1e-14) break; }
+  return 1-Math.exp(-x+a*Math.log(x)-lgamma(a))*h; }
+const chi2sf=(x,k)=>1-gammaP(k/2,x/2);
+const tp2=(t,df)=>ibeta(df/2,0.5,df/(df+t*t));            // two-sided p
+const fsf=(F,d1,d2)=>F<=0?1:ibeta(d2/2,d1/2,d2/(d2+d1*F));
+const erfc=x=>{ const z=Math.abs(x),t=1/(1+0.5*z); const r=t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277))))))))); return x>=0?r:2-r; };
+const ncdf=x=>0.5*erfc(-x/Math.SQRT2), npdf=x=>Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI);
+/* OLS with classical SEs */
+function solve(A,b){ const n=A.length, M=A.map((r,i)=>[...r,b[i]]); for(let i=0;i<n;i++){ let p=i; for(let k=i+1;k<n;k++) if(Math.abs(M[k][i])>Math.abs(M[p][i])) p=k; [M[i],M[p]]=[M[p],M[i]];
+  for(let k=i+1;k<n;k++){ const f=M[k][i]/M[i][i]; for(let j=i;j<=n;j++) M[k][j]-=f*M[i][j]; } }
+  const x=new Array(n).fill(0); for(let i=n-1;i>=0;i--){ let s=M[i][n]; for(let j=i+1;j<n;j++) s-=M[i][j]*x[j]; x[i]=s/M[i][i]; } return x; }
+function inv(A){ const n=A.length; return A.map((_,i)=>solve(A,A.map((__,j)=>j===i?1:0))).reduce((acc,col,j)=>{ col.forEach((v,i)=>{ (acc[i]=acc[i]||[])[j]=v; }); return acc; },[]); }
+function ols(X,y){ const n=y.length,k=X[0].length, XtX=[...Array(k)].map((_,i)=>[...Array(k)].map((__,j)=>X.reduce((s,r)=>s+r[i]*r[j],0))), Xty=[...Array(k)].map((_,i)=>X.reduce((s,r,t)=>s+r[i]*y[t],0));
+  const b=solve(XtX,Xty), fit=X.map(r=>r.reduce((s,v,i)=>s+v*b[i],0)), e=y.map((v,i)=>v-fit[i]), sse=e.reduce((s,v)=>s+v*v,0), ym=y.reduce((s,v)=>s+v,0)/n, sst=y.reduce((s,v)=>s+(v-ym)**2,0);
+  const s2=sse/(n-k), Vi=inv(XtX), se=b.map((_,i)=>Math.sqrt(s2*Vi[i][i])), t=b.map((v,i)=>v/se[i]), p=t.map(v=>tp2(v,n-k));
+  const r2=1-sse/sst, adj=1-(1-r2)*(n-1)/(n-k), F=k>1?((sst-sse)/(k-1))/(sse/(n-k)):NaN, Fp=k>1?fsf(F,k-1,n-k):NaN;
+  let dwn=0; for(let i=1;i<n;i++) dwn+=(e[i]-e[i-1])**2; const dw=dwn/sse;
+  return {b,se,t,p,r2,adj,F,Fp,dw,e,fit,n,k}; }
+function bp(X,e){ const e2=e.map(v=>v*v), r=ols(X,e2), lm=e.length*r.r2, df=X[0].length-1; return {lm,p:chi2sf(lm,df)}; }
+function jb(e){ const n=e.length, m=e.reduce((s,v)=>s+v,0)/n, m2=e.reduce((s,v)=>s+(v-m)**2,0)/n, m3=e.reduce((s,v)=>s+(v-m)**3,0)/n, m4=e.reduce((s,v)=>s+(v-m)**4,0)/n;
+  const S=m3/Math.pow(m2,1.5), Ku=m4/(m2*m2), stat=n/6*(S*S+(Ku-3)**2/4); return {stat,p:chi2sf(stat,2),S,K:Ku}; }
+function acf(x,lags){ const n=x.length, m=x.reduce((s,v)=>s+v,0)/n, d=x.map(v=>v-m), c0=d.reduce((s,v)=>s+v*v,0); const out=[];
+  for(let k=1;k<=lags;k++){ let c=0; for(let t=k;t<n;t++) c+=d[t]*d[t-k]; out.push(c/c0); } return out; }
+function ljung(x,h){ const n=x.length, r=acf(x,h); let q=0; r.forEach((v,i)=>q+=v*v/(n-i-1)); q*=n*(n+2); return {q,p:chi2sf(q,h)}; }
+return {el,frame,lin,path,pt,tip,hover,axisX,axisY,nice,label,chi2sf,tp2,fsf,ncdf,npdf,ols,bp,jb,acf,ljung};
+})();
+
+/* Port of cb_pricer.py: recombining CRR lattice, single risky rate vs Tsiveriotis-Fernandes */
+const CB={};
+CB.couponSteps=function(t){ const dt=t.maturity/t.n, set=new Set(), nc=Math.round(t.maturity*t.freq);
+  for(let k=1;k<=nc;k++) set.add(Math.round((k/t.freq)/dt)); return set; };
+CB.tree=function(t){ const dt=t.maturity/t.n, u=Math.exp(t.vol*Math.sqrt(dt)), d=1/u, p=(Math.exp(t.r*dt)-d)/(u-d); return {dt,u,d,p}; };
+CB.price=function(S0,t,keep){
+  const {dt,u,d,p}=CB.tree(t), n=t.n, cs=CB.couponSteps(t), cpnAmt=t.face*t.coupon/t.freq;
+  const dR=Math.exp(-t.r*dt), dX=Math.exp(-(t.r+t.spread)*dt);
+  const Sat=(step,j)=>S0*Math.pow(u,j)*Math.pow(d,step-j);
+  const red=t.face+(cs.has(n)?cpnAmt:0);
+  let V=new Float64Array(n+1), B=new Float64Array(n+1), E=new Float64Array(n+1);
+  const nodes=keep?[]:null;
+  for(let j=0;j<=n;j++){ const cv=t.cr*Sat(n,j); V[j]=Math.max(cv,red); const eq=cv>red; B[j]=eq?0:red; E[j]=eq?cv:0; }
+  if(keep) nodes[n]=Array.from({length:n+1},(_,j)=>({S:Sat(n,j),cv:t.cr*Sat(n,j),single:V[j],cocb:B[j],cotv:E[j],convS:t.cr*Sat(n,j)>=red,convT:E[j]>0&&B[j]===0}));
+  for(let step=n-1;step>=0;step--){
+    const cpn=cs.has(step)?cpnAmt:0, V2=new Float64Array(step+1), B2=new Float64Array(step+1), E2=new Float64Array(step+1), row=keep?[]:null;
+    for(let j=0;j<=step;j++){
+      const S=Sat(step,j), cv=t.cr*S;
+      const cont=dX*(p*V[j+1]+(1-p)*V[j])+cpn; V2[j]=Math.max(cv,cont);
+      const bc=dX*(p*B[j+1]+(1-p)*B[j])+cpn, ec=dR*(p*E[j+1]+(1-p)*E[j]);
+      const conv=cv>bc+ec; B2[j]=conv?0:bc; E2[j]=conv?cv:ec;
+      if(keep) row.push({S,cv,single:V2[j],cocb:B2[j],cotv:E2[j],convS:cv>=cont,convT:conv});
+    }
+    V=V2;B=B2;E=E2; if(keep) nodes[step]=row;
+  }
+  return {single:V[0], tf:B[0]+E[0], cocb:B[0], cotv:E[0], nodes};
+};
+
+
+</script>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id), {el,frame,lin,path,hover,axisX,axisY,nice,label}=K;
+const BASE={face:100,coupon:.04,freq:2,maturity:5,cr:2,r:.045,spread:.03,vol:.35,n:300};
+let T={...BASE}, MD="tf";
+const narrow=()=>window.innerWidth<560;
+const f2=v=>v.toFixed(2);
+const readGrid=(id,items)=>$(id).innerHTML=items.map(([b,s,hot])=>`<div class="${hot?"hot":""}"><b>${b}</b><span>${s}</span></div>`).join("");
+
+/* ---------- lattice ---------- */
+$("latLegend").innerHTML=`<span><i style="background:var(--red)"></i>converted (all equity)</span><span><i style="background:transparent;border:2px solid var(--ink)"></i>held: ring = equity share (red) vs cash share (ink)</span><span><i style="background:var(--paper-2);border:1px dashed var(--ink)"></i>held, single rate</span>`;
+let sel=null;
+function drawLattice(){
+  const S0=+$("latS").value; $("latSOut").textContent="$"+S0;
+  document.querySelectorAll("#mdChips .chip").forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.md===MD)));
+  const t={...T,n:10}, res=CB.price(S0,t,true), nodes=res.nodes, n=10;
+  const f=frame($("pLat"),narrow()?300:380,{l:28,r:28,t:18,b:30});
+  f.svg.setAttribute("aria-label",`10-step convertible lattice, ${MD==="tf"?"Tsiveriotis–Fernandes":"single risky rate"}, S0 ${S0}`);
+  const x=lin(0,n,f.m.l,f.w-f.m.r), y=lin(-n,n,f.h-f.m.b,f.m.t), R=Math.max(5,Math.min(11,f.iw/(n*3.4)));
+  const pos=(s,j)=>[x(s),y(2*j-s)];
+  for(let s=0;s<n;s++) for(let j=0;j<=s;j++){ const [x0,y0]=pos(s,j), [xu,yu]=pos(s+1,j+1), [xd,yd]=pos(s+1,j);
+    el("line",{x1:x0,y1:y0,x2:xu,y2:yu,stroke:"var(--rule)","stroke-width":1},f.svg); el("line",{x1:x0,y1:y0,x2:xd,y2:yd,stroke:"var(--rule)","stroke-width":1},f.svg); }
+  const hits=[];
+  nodes.forEach((row,s)=>row.forEach((nd,j)=>{
+    const [cx,cy]=pos(s,j), g=el("g",{class:"node",tabindex:0,role:"button","aria-label":`step ${s}, S ${f2(nd.S)}`},f.svg);
+    if(MD==="tf"){
+      if(nd.convT){ el("circle",{cx,cy,r:R,fill:"var(--red)",stroke:"var(--paper)","stroke-width":1.5},g); }
+      else{ const tot=nd.cocb+nd.cotv, sh=tot>0?nd.cotv/tot:0, C=2*Math.PI*(R-2);
+        el("circle",{cx,cy,r:R,fill:"var(--paper)",stroke:"none"},g);
+        el("circle",{cx,cy,r:R-2,fill:"none",stroke:"var(--ink)","stroke-width":3.5},g);
+        if(sh>0.001) el("circle",{cx,cy,r:R-2,fill:"none",stroke:"var(--red)","stroke-width":3.5,"stroke-dasharray":`${C*sh} ${C}`,transform:`rotate(-90 ${cx} ${cy})`},g); }
+    } else {
+      el("circle",{cx,cy,r:R,fill:nd.convS?"var(--red)":"var(--paper-2)",stroke:nd.convS?"var(--paper)":"var(--ink)","stroke-dasharray":nd.convS?"":"2 2","stroke-width":1.25},g);
+    }
+    if(sel&&sel[0]===s&&sel[1]===j) el("circle",{cx,cy,r:R+3.5,fill:"none",stroke:"var(--ink)","stroke-width":1.5},g);
+    const pick=()=>{ sel=[s,j]; info(s,nd,t); drawLattice(); };
+    g.addEventListener("click",pick); g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(); } });
+    hits.push([cx,cy,s,nd]);
+  }));
+  axisX(f,x,[0,2,4,6,8,10],s=>(s*t.maturity/n).toFixed(0)+"y","time →");
+  el("text",{x:f.m.l,y:12},f.svg,`root: TF ${f2(res.tf)} · single ${f2(res.single)}`);
+  const hv=K.hover(f,(px,py)=>{ let b=null,bd=1e9; hits.forEach(h=>{ const d=Math.hypot(h[0]-px,h[1]-py); if(d<bd){bd=d;b=h;} }); if(!b||bd>R+8) return null;
+    const nd=b[3]; return {x:b[0],noCross:true,html:`t = ${(b[2]*t.maturity/n).toFixed(1)}y · S ${f2(nd.S)}<br>convert ${f2(nd.cv)}<br>TF ${f2(nd.cocb+nd.cotv)} (cash ${f2(nd.cocb)} · equity ${f2(nd.cotv)})<br>single ${f2(nd.single)}`}; });
+  hv.addEventListener("click",ev=>{ const [px,py]=K.pt(f,ev); let b=null,bd=1e9; hits.forEach(h=>{ const d=Math.hypot(h[0]-px,h[1]-py); if(d<bd){bd=d;b=h;} });
+    if(b&&bd<=R+8){ sel=[b[2],hits.filter(h=>h[2]===b[2]).indexOf(b)]; info(b[2],b[3],t); drawLattice(); } });
+  if(!sel) info(0,nodes[0][0],t);
+}
+function info(s,nd,t){
+  const tot=nd.cocb+nd.cotv;
+  readGrid("nodeRead",[[`${(s*t.maturity/10).toFixed(1)}y · $${f2(nd.S)}`,"time · share price"],[f2(nd.cv),"conversion value (2 × S)"],
+    [f2(nd.cocb),"COCB · cash leg, discounted at r + s"],[f2(nd.cotv),"COTV · equity leg, discounted at r"],
+    [f2(tot),`TF value · ${nd.convT?"convert":"hold"}`,true],[f2(nd.single),`single-rate value · ${nd.convS?"convert":"hold"}`]]);
+}
+$("mdChips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; MD=b.dataset.md; drawLattice(); });
+$("latS").addEventListener("input",()=>{ sel=null; drawLattice(); });
+
+/* ---------- divergence sweep ---------- */
+function bondFloor(t){ let pv=0; const nc=Math.round(t.maturity*t.freq), c=t.face*t.coupon/t.freq, y=t.r+t.spread;
+  for(let k=1;k<=nc;k++) pv+=c*Math.exp(-y*k/t.freq); return pv+t.face*Math.exp(-y*t.maturity); }
+function drawDiv(){
+  T.spread=+$("spr").value/1e4; T.vol=+$("vol").value/100;
+  $("sprOut").textContent=$("spr").value+" bp"; $("volOut").textContent=$("vol").value+"%";
+  const t={...T,n:300}, Ss=[]; for(let s=5;s<=200;s+=2.5) Ss.push(s);
+  const rows=Ss.map(S=>{ const r=CB.price(S,t); return {S,tf:r.tf,sg:r.single,div:(r.tf/r.single-1)*100}; });
+  const pk=rows.reduce((a,b)=>b.div>a.div?b:a,rows[0]), floor=bondFloor(t);
+  const atm=rows.find(r=>r.S===50);
+  readGrid("divRead",[[pk.div.toFixed(2)+"%","peak divergence on a $2.50 grid",true],["S₀ = "+pk.S,`conversion value ${(pk.S*2).toFixed(0)} vs par 100`],[atm.div.toFixed(2)+"%","divergence at S₀ = 50, the par crossover"],[f2(floor),"straight-bond floor"]]);
+  // price panel
+  const f=frame($("pPx"),narrow()?240:300,{l:46,r:14,t:14,b:30});
+  f.svg.setAttribute("aria-label","Convertible price under both credit treatments across share price");
+  const x=lin(5,200,f.m.l,f.w-f.m.r), hi=Math.max(...rows.map(r=>r.tf))*1.05, y=lin(0,hi,f.h-f.m.b,f.m.t);
+  axisY(f,y,nice(0,hi,5),v=>v.toFixed(0)); axisX(f,x,[25,50,75,100,125,150,175,200],v=>"$"+v,"S₀ →");
+  el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:y(floor),y2:y(floor),stroke:"var(--ink)","stroke-dasharray":"1 3","stroke-linecap":"round","stroke-width":1.5},f.svg);
+  el("path",{d:path(rows.map(r=>[x(r.S),y(Math.min(hi,2*r.S))])),fill:"none",stroke:"var(--axis)","stroke-width":1.25,"stroke-dasharray":"5 4"},f.svg);
+  el("path",{d:path(rows.map(r=>[x(r.S),y(r.sg)])),fill:"none",stroke:"var(--ink)","stroke-width":2},f.svg);
+  el("path",{d:path(rows.map(r=>[x(r.S),y(r.tf)])),fill:"none",stroke:"var(--red)","stroke-width":2.25},f.svg);
+  el("line",{x1:x(pk.S),x2:x(pk.S),y1:y(pk.sg),y2:y(pk.tf),stroke:"var(--red)","stroke-width":4,"stroke-opacity":0.35},f.svg);
+  label(f,x(30),y(floor)-6,"bond floor","ink");
+  const lr=rows[rows.length-8]; label(f,x(lr.S)-6,y(lr.tf)-8,"Tsiveriotis–Fernandes","red","end"); label(f,x(lr.S)+6,y(lr.sg)+16,"single rate","ink");
+  label(f,x(160),y(2*160)>f.m.t+10?y(2*160)-6:f.m.t+10,"conversion value","ink");
+  hover(f,px=>{ const S=5+(px-f.m.l)/f.iw*195, r=rows.reduce((a,b)=>Math.abs(b.S-S)<Math.abs(a.S-S)?b:a); return {x:x(r.S),html:`S₀ $${r.S}<br>TF ${f2(r.tf)}<br>single ${f2(r.sg)}<br>conversion ${f2(2*r.S)}`}; });
+  // divergence panel
+  const g=frame($("pDiv"),180,{l:46,r:14,t:14,b:30});
+  g.svg.setAttribute("aria-label","Percentage gap between TF and single-rate prices");
+  const dh=Math.max(1,pk.div*1.15), yy=lin(0,dh,g.h-g.m.b,g.m.t), xx=lin(5,200,g.m.l,g.w-g.m.r);
+  axisY(g,yy,nice(0,dh,4),v=>v.toFixed(0)+"%"); axisX(g,xx,[25,50,75,100,125,150,175,200],v=>"$"+v,"S₀ →");
+  el("line",{x1:xx(50),x2:xx(50),y1:g.m.t,y2:g.h-g.m.b,stroke:"var(--ink)","stroke-dasharray":"3 3"},g.svg);
+  el("text",{x:xx(50)+4,y:g.m.t+10},g.svg,"par crossover");
+  const area=rows.map(r=>[xx(r.S),yy(Math.max(0,r.div))]);
+  el("path",{d:path(area)+`L${xx(200)},${yy(0)}L${xx(5)},${yy(0)}Z`,fill:"var(--red-wash)"},g.svg);
+  el("path",{d:path(area),fill:"none",stroke:"var(--red)","stroke-width":2},g.svg);
+  el("circle",{cx:xx(pk.S),cy:yy(pk.div),r:5,fill:"var(--red)",stroke:"var(--paper)","stroke-width":2},g.svg);
+  label(g,xx(pk.S)+8,yy(pk.div)+4,`${pk.div.toFixed(2)}% at $${pk.S}`,"red");
+  hover(g,px=>{ const S=5+(px-g.m.l)/g.iw*195, r=rows.reduce((a,b)=>Math.abs(b.S-S)<Math.abs(a.S-S)?b:a); return {x:xx(r.S),html:`S₀ $${r.S}<br>gap ${r.div.toFixed(2)}%`}; });
+  drawGreeks(); drawLattice();
+}
+/* ---------- greeks ---------- */
+function drawGreeks(){
+  const B=[["Deep OTM",20],["Slightly OTM",40],["Near boundary",50],["Slightly ITM",60],["Moderately ITM",75],["Deep ITM",200]];
+  const t={...T,n:300}, tb={...t,spread:t.spread+0.01};
+  const rows=B.map(([nm,S])=>{ const p0=CB.price(S,t), p1=CB.price(S,tb), up=CB.price(S+0.5,t), dn=CB.price(S-0.5,t);
+    return {nm,S,ds:(up.single-dn.single),dt:(up.tf-dn.tf),cs:(p1.single/p0.single-1)*100,ct:(p1.tf/p0.tf-1)*100}; });
+  $("gkTbl").innerHTML=`<thead><tr><th>Region</th><th>S₀</th><th>Delta · single</th><th>Delta · TF</th><th>CS01 · single</th><th>CS01 · TF</th></tr></thead><tbody>${rows.map(r=>
+    `<tr class="${r.S===75?"hl":""}"><td>${r.nm}</td><td>${r.S}</td><td>${r.ds.toFixed(3)}</td><td>${r.dt.toFixed(3)}</td><td>${r.cs.toFixed(2)}%</td><td>${r.ct.toFixed(2)}%</td></tr>`).join("")}</tbody>`;
+}
+["spr","vol"].forEach(id=>$(id).addEventListener("input",()=>{ sel=null; drawDiv(); }));
+$("cbReset").addEventListener("click",()=>{ $("spr").value=300; $("vol").value=35; sel=null; drawDiv(); });
+drawDiv();
+let rt=0; addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(drawDiv,120); });
+})();
+
 </script>
 </body></html>
