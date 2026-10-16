@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VaR &amp; Tail Risk Under Model Misspecification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,900&family=Archivo:wght@400;500;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+html,body{margin:0} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} [hidden]{display:none!important}
+
+:root{
+  color-scheme:light;
+  --paper:#e5e2de; --paper-2:#dcd8d3; --ink:#161514; --ink-soft:#4a4744; --rule:#c4bfb9;
+  --red:#dc3b2f; --red-deep:#b52a20;
+  --display:"Fraunces", "Times New Roman", Georgia, serif;
+  --sans:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+a{color:var(--red);text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:2px}
+.rough{filter:url(#rough)}
+.star{display:inline-block;fill:var(--red);transform-origin:50% 50%;cursor:inherit}
+@keyframes shake{0%{transform:rotate(0) scale(1)}15%{transform:rotate(-28deg) scale(1.25)}30%{transform:rotate(22deg) scale(1.15)}45%{transform:rotate(-16deg) scale(1.2) translateX(-1px)}60%{transform:rotate(12deg) scale(1.1) translateX(1px)}75%{transform:rotate(-6deg)}100%{transform:rotate(0) scale(1)}}
+.star.shaking{animation:shake .6s cubic-bezier(.36,.07,.19,.97)}
+@media (prefers-reduced-motion:reduce){.star.shaking{animation:none}}
+
+.page{max-width:980px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:26px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:13px}
+.top a:hover{text-decoration:underline;text-underline-offset:3px}
+.eyebrow{font-family:var(--sans);font-weight:800;font-size:clamp(18px,2.4vw,24px);letter-spacing:-.04em;color:var(--ink);display:flex;align-items:center;gap:.4em}
+h1{margin:6px 0 0;font-family:var(--display);font-weight:900;color:var(--red);font-size:clamp(44px,8vw,96px);line-height:.92;letter-spacing:-.02em;text-wrap:balance}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:11.5px;border:1px solid var(--ink);border-radius:999px;padding:1px 9px}
+.lede{margin:0;font-size:clamp(17px,1.9vw,20px);line-height:1.5;max-width:60ch}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule)}
+.fig{padding:16px 16px 18px 0;display:flex;flex-direction:column;gap:4px;min-width:0}
+.fig b{font-family:var(--sans);font-weight:800;font-size:clamp(28px,4vw,42px);letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.fig span{font-size:13px;color:var(--ink-soft);max-width:28ch}
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;max-width:66ch}
+li{display:grid;grid-template-columns:1.4em minmax(0,1fr);gap:8px;align-items:start}
+li .star{margin-top:.3em}
+.links{display:flex;gap:14px;flex-wrap:wrap}
+.out{font-family:var(--sans);font-weight:800;font-size:15px;letter-spacing:-.02em;background:var(--red);color:var(--paper);padding:8px 14px;border-radius:2px;transform:rotate(-1deg)}
+.out:hover{background:var(--red-deep)}
+.nav{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:16px;font-weight:800;letter-spacing:-.03em;font-size:17px}
+.nav a{color:var(--ink)} .nav a:hover{color:var(--red)}
+/* rat cursor: red with black eyes; nose is the hotspot; darker over anything clickable */
+html,body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23dc3b2f' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23dc3b2f'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,auto}
+a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23a8231a' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23a8231a'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,pointer}
+
+
+/* ---- interactive tail-risk lab: ink-on-paper charts, red = the true (Student-t) world ---- */
+:root{ --band:rgba(22,21,20,.10); --red-wash:rgba(220,59,47,.14); --grid:rgba(22,21,20,.10); --axis:#8a847e; }
+.page{gap:30px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);
+  padding:10px 0;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center}
+.ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.ctl .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ctl output{font-family:var(--mono);font-size:13px;font-weight:500;min-width:3.2ch;font-variant-numeric:tabular-nums}
+.chips{display:inline-flex;gap:4px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:12px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:2px 10px;line-height:1.5}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip:hover{border-color:var(--red);color:var(--red)} .chip[aria-pressed="true"]:hover{color:var(--paper);background:var(--red);border-color:var(--red)}
+input[type=range]{accent-color:var(--red);width:150px;max-width:40vw}
+.btn{font-family:var(--sans);font-weight:800;font-size:13.5px;letter-spacing:-.01em;background:var(--ink);color:var(--paper);border:0;border-radius:2px;padding:6px 12px}
+.btn:hover{background:var(--red)}
+.lab{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.lab h2{margin:0;font-family:var(--sans);font-weight:800;font-size:clamp(26px,3.6vw,38px);letter-spacing:-.045em;line-height:1.05;display:flex;gap:.35em;align-items:baseline;text-wrap:balance}
+.lab h2 .star{width:.6em;height:.6em;flex:none}
+.lab .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.lab p{margin:0;max-width:64ch}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.read div{padding:10px 12px 10px 0;display:flex;flex-direction:column;gap:2px;min-width:0}
+.read b{font-family:var(--sans);font-weight:800;font-size:clamp(20px,2.6vw,26px);letter-spacing:-.04em;line-height:1.1;font-variant-numeric:tabular-nums}
+.read span{font-size:12.5px;color:var(--ink-soft)}
+.read .hot b{color:var(--red)}
+.plot{position:relative;width:100%;min-width:0}
+.plot svg{display:block;width:100%;height:auto;overflow:hidden}
+.plot text{font-family:var(--mono);font-size:10.5px;fill:var(--ink-soft)}
+.plot .lbl{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:-.01em}
+.plot .lbl.red{fill:var(--red)} .plot .lbl.ink{fill:var(--ink)}
+.cap{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);max-width:80ch;margin:0}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11.5px;line-height:1.5;padding:6px 9px;border-left:3px solid var(--red);white-space:nowrap;z-index:3;transform:translate(12px,-50%)}
+.tip.flip{transform:translate(calc(-100% - 12px),-50%)}
+.steps{list-style:none;counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;max-width:none;border-top:1px solid var(--rule)}
+.steps li{counter-increment:s;display:flex;flex-direction:column;gap:6px;padding:12px 14px 12px 0;border-bottom:1px solid var(--rule)}
+.steps li::before{content:counter(s);font-family:var(--display);font-weight:900;color:var(--red);font-size:28px;line-height:1}
+.steps code{font-family:var(--mono);font-size:12.5px;background:var(--paper-2);padding:1px 5px;border-radius:2px;overflow-wrap:anywhere}
+.steps span{font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid currentColor;width:max-content}
+.pill.ok{color:var(--ink)} .pill.miss{color:var(--red)}
+.busy{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);min-height:1.5em}
+.tbl{overflow-x:auto;border-top:2px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px 8px 0;text-align:right;border-bottom:1px solid var(--rule);font-size:14px}
+th{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+th:first-child,td:first-child{text-align:left}
+tr.hl td{color:var(--red);font-weight:800}
+tbody tr:hover td{background:var(--paper-2)}
+@media (max-width:560px){ .bar{gap:8px 16px} input[type=range]{width:110px} }
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough" x="-5%" y="-10%" width="110%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.7 1.3" result="speck"/>
+    <feComposite in="d" in2="speck" operator="in"/>
+  </filter>
+  <symbol id="spark" viewBox="0 0 20 20"><path d="M10 0 L11.6 8.4 L20 10 L11.6 11.6 L10 20 L8.4 11.6 L0 10 L8.4 8.4 Z"/></symbol>
+</svg>
+<main class="page">
+  <div class="top"><a href="index.html">← aDiTrI</a><span>04 / 08</span></div>
+  <header>
+    <div class="eyebrow"><svg class="star" width="0.8em" height="0.8em" aria-hidden="true"><use href="#spark"/></svg>tail risk</div>
+    <h1 class="rough">VaR &amp; Tail Risk Under Model Misspecification</h1>
+  </header>
+  <div class="tags"><span class="tag">Monte Carlo</span><span class="tag">Importance sampling</span><span class="tag">Discrete moment matching</span><span class="tag">Linear programming</span><span class="tag">Working paper</span></div>
+  <p class="lede">What happens to high-confidence VaR when the model you estimate with has thinner tails than the world? A Gaussian model calibrated to QQQ daily returns is tested against Student-t returns, comparing an efficient estimator with a robust one. Everything below recomputes in your browser as you move the controls.</p>
+  <div class="figs"><div class="fig"><b>16.5%</b><span>tail VaR underestimate by importance sampling at 99.5%, ν = 5</span></div><div class="fig"><b>154 → 91</b><span>effective sample size, 99% → 99.5%</span></div><div class="fig"><b>ν = 5, 7, 10</b><span>Student-t tails tested</span></div></div>
+
+  <div class="bar" role="group" aria-label="Scenario">
+    <div class="ctl"><span class="k">True tails</span><label for="nu" class="k" style="text-transform:none;letter-spacing:0">ν</label><input id="nu" type="range" min="3" max="30" step="1" value="5" aria-label="Student-t degrees of freedom"><output id="nuOut" for="nu">5</output>
+      <span class="chips" id="nuChips"><button class="chip" type="button" data-nu="5">5</button><button class="chip" type="button" data-nu="7">7</button><button class="chip" type="button" data-nu="10">10</button></span></div>
+    <div class="ctl"><span class="k">Confidence α</span><span class="chips" id="aChips"><button class="chip" type="button" data-a="0.99">99%</button><button class="chip" type="button" data-a="0.995">99.5%</button><button class="chip" type="button" data-a="0.999">99.9%</button></span></div>
+  </div>
+
+  <section class="lab" aria-labelledby="h-gap">
+    <span class="kicker">The problem</span>
+    <h2 id="h-gap"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Thin-tailed model, fat-tailed world</h2>
+    <p>Both distributions below have the same mean and the same daily volatility. They agree almost everywhere, until you go far enough into the loss tail, which is exactly where VaR is read. The dashed line is the tail probability 1 − α; each curve crosses it at its own VaR.</p>
+    <div class="read">
+      <div><b id="gGauss">–</b><span>Gaussian VaR (the model)</span></div>
+      <div class="hot"><b id="gTrue">–</b><span>Student-t VaR (the world)</span></div>
+      <div class="hot"><b id="gGap">–</b><span>how much the model understates it</span></div>
+    </div>
+    <div class="plot" id="pTail"></div>
+    <p class="cap">Probability that the 1-day loss exceeds x, log scale. Daily volatility σ ≈ 1.08%, mean ≈ 0, both implied by Table 1 of the paper. The Student-t is rescaled to the same variance as the Gaussian.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-is">
+    <span class="kicker">Estimator 1 · efficient</span>
+    <h2 id="h-is"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Importance sampling: precise, but aimed at the model</h2>
+    <ol class="steps">
+      <li><span>Shift the sampling distribution into the tail by exponential tilting:</span><code>N(μ − θ, σ²),  θ = −σ·z₁₋α</code></li>
+      <li><span>Reweight every draw by the likelihood ratio so the estimate stays unbiased under the model:</span><code>w(x) = φ(x) / φθ(x)</code></li>
+      <li><span>Find VaR by bracketing and bisection on the weighted tail probability:</span><code>p̂IS(x) = (1/N) Σ wᵢ·1{Lᵢ &gt; x} = 1 − α</code></li>
+    </ol>
+    <div class="read">
+      <div><b id="iIS">–</b><span>IS VaR, mean of 100 runs</span></div>
+      <div class="hot"><b id="iTrue">–</b><span>true Student-t VaR</span></div>
+      <div class="hot"><b id="iBias">–</b><span>IS bias vs the truth</span></div>
+      <div><b id="iVR">–</b><span>variance reduction vs plain MC</span></div>
+      <div><b id="iESS">–</b><span>effective sample size, this run</span></div>
+    </div>
+    <div class="plot" id="pDens"></div>
+    <p class="cap">Top: the model's loss density, the tilted sampling density centred on the target VaR, and the true Student-t density. Bottom: the likelihood weight of 300 draws from one run of N = 10,000. A few draws on the near side carry most of the weight, and that concentration gets worse as α rises.</p>
+    <div class="plot" id="pStrip"></div>
+    <div class="ctl"><button class="btn" id="resample" type="button">Run 100 more replications</button><span class="busy" id="isBusy" aria-live="polite"></span></div>
+    <p class="cap">Each dot is one VaR estimate from N = 10,000 draws. Importance sampling clusters tightly, around the Gaussian answer. Changing ν moves the truth and leaves the estimates where they are.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-dmm">
+    <span class="kicker">Estimator 2 · robust</span>
+    <h2 id="h-dmm"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Discrete moment matching: a bracket instead of a point</h2>
+    <ol class="steps">
+      <li><span>Put the loss on a grid of support points:</span><code>X₀ &lt; X₁ &lt; … &lt; Xₘ</code></li>
+      <li><span>Treat the probability on each point as an unknown:</span><code>pⱼ ≥ 0,  Σ pⱼ = 1</code></li>
+      <li><span>Only require the first d moments to match:</span><code>Σ pⱼ Xⱼᵏ = mₖ,  k = 1…d</code></li>
+      <li><span>Solve two linear programs at every x for the lowest and highest possible CDF, then read VaR off both envelopes:</span><code>min / max Σ_{Xⱼ ≤ x} pⱼ</code></li>
+    </ol>
+    <div class="ctl"><span class="k">Moments matched d</span><span class="chips" id="dChips"><button class="chip" type="button" data-d="2">2</button><button class="chip" type="button" data-d="3">3</button><button class="chip" type="button" data-d="4">4</button><button class="chip" type="button" data-d="5">5</button><button class="chip" type="button" data-d="6">6</button><button class="chip" type="button" data-d="7">7</button></span><span class="busy" id="dBusy" aria-live="polite"></span></div>
+    <div class="read">
+      <div><b id="dLo">–</b><span>lower VaR bound</span></div>
+      <div><b id="dHi">–</b><span>upper VaR bound</span></div>
+      <div class="hot"><b id="dTrue">–</b><span>true Student-t VaR</span></div>
+      <div><span id="dPill" class="pill ok">–</span><span id="dWidth"></span></div>
+    </div>
+    <div class="plot" id="pDmm"></div>
+    <p class="cap">The shaded band holds every tail probability any distribution with these d moments can have. Few moments give a wide, conservative bracket; more moments tighten it toward the Gaussian, and at some point the bracket can stop containing the truth.</p>
+    <div class="plot" id="pAtoms"></div>
+    <p class="cap">The worst case behind the upper bound: a discrete distribution with exactly the Gaussian's first d moments that parks just over 1 − α of its mass at the upper bound. Mass on a log scale. Computed live: 201-point grid on [−8σ, 12σ], moments of the calibrated Gaussian, dense two-phase simplex.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-tab">
+    <span class="kicker">From the paper</span>
+    <h2 id="h-tab"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>The numbers</h2>
+    <p>Table 1 of the working paper, in return units, with the bias as a share of the true VaR added. The row matching the controls above is highlighted. The live demos above use one fixed σ, so their figures land close to these rather than exactly on them.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>ν</th><th>α</th><th>True VaR</th><th>IS mean</th><th>IS std</th><th>IS bias</th><th>Bias %</th><th>ESS</th><th>Max weight</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table></div>
+  </section>
+
+  <div class="links"><a class="out" href="https://arxiv.org/abs/2601.09927">arXiv:2601.09927 ↗</a><a class="out" href="https://github.com/Aditri-07/Efficiency-versus-Robustness-under-Tail-Misspecification">repo ↗</a></div>
+  <nav class="nav" aria-label="More projects"><a href="work-ccr.html">← counterparty credit risk</a><a href="work-factor-index.html">factor investing →</a></nav>
+</main>
+
+<script>
+(function(){
+  function shake(el){ if(!el) return; el.classList.remove("shaking"); void el.getBoundingClientRect(); el.classList.add("shaking"); }
+  document.querySelectorAll(".star").forEach(s=>{
+    s.addEventListener("animationend",()=>s.classList.remove("shaking"));
+    s.addEventListener("pointerenter",()=>shake(s));
+    s.addEventListener("pointerdown",()=>shake(s));
+  });
+})();
+</script>
+<script id="mathsrc">
+/* ---- numerics: normal, Student-t, PRNG, LP ---- */
+const M = {};
+M.lgamma = function(x){
+  const g=7, c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+  if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-M.lgamma(1-x);
+  x-=1; let a=c[0]; const t=x+g+0.5;
+  for(let i=1;i<9;i++) a+=c[i]/(x+i);
+  return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(a);
+};
+M.erfc = function(x){ // Numerical Recipes erfcc, rel. error < 1.2e-7
+  const z=Math.abs(x), t=1/(1+0.5*z);
+  const r=t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277)))))))));
+  return x>=0?r:2-r;
+};
+M.npdf = x => Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI);
+M.nsf = x => 0.5*M.erfc(x/Math.SQRT2);
+M.ninv = function(p){ // Acklam
+  const a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00],
+        b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328116254025668e+01],
+        c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00],
+        d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+  const pl=0.02425; let q,r;
+  if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  if(p>1-pl){q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  q=p-0.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+};
+function betacf(a,b,x){
+  const MAXIT=300,EPS=3e-14,FPMIN=1e-300;
+  let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;
+  if(Math.abs(d)<FPMIN)d=FPMIN; d=1/d; let h=d;
+  for(let m=1;m<=MAXIT;m++){
+    const m2=2*m; let aa=m*(b-m)*x/((qam+m2)*(a+m2));
+    d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN; c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN; d=1/d; h*=d*c;
+    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d=1+aa*d; if(Math.abs(d)<FPMIN)d=FPMIN; c=1+aa/c; if(Math.abs(c)<FPMIN)c=FPMIN; d=1/d;
+    const del=d*c; h*=del; if(Math.abs(del-1)<EPS)break;
+  }
+  return h;
+}
+M.ibeta = function(a,b,x){
+  if(x<=0)return 0; if(x>=1)return 1;
+  const bt=Math.exp(M.lgamma(a+b)-M.lgamma(a)-M.lgamma(b)+a*Math.log(x)+b*Math.log(1-x));
+  return x<(a+1)/(a+b+2) ? bt*betacf(a,b,x)/a : 1-bt*betacf(b,a,1-x)/b;
+};
+/* Student-t rescaled to unit variance (needs nu>2) */
+M.tscale = nu => Math.sqrt((nu-2)/nu);
+M.tsf = function(x,nu){ // P(X > x), X = s*T
+  const t=x/M.tscale(nu), p=0.5*M.ibeta(nu/2,0.5,nu/(nu+t*t));
+  return t>=0?p:1-p;
+};
+M.tpdf = function(x,nu){
+  const s=M.tscale(nu), t=x/s;
+  return Math.exp(M.lgamma((nu+1)/2)-M.lgamma(nu/2)-0.5*Math.log(nu*Math.PI)-(nu+1)/2*Math.log(1+t*t/nu))/s;
+};
+M.tinv = function(alpha,nu){ // x with P(X>x)=1-alpha
+  let lo=0,hi=60; const target=1-alpha;
+  for(let i=0;i<100;i++){const m=(lo+hi)/2; if(M.tsf(m,nu)>target)lo=m; else hi=m;}
+  return (lo+hi)/2;
+};
+/* seeded PRNG + normals */
+M.rng = function(seed){
+  let s=seed>>>0;
+  const u=()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};
+  let spare=null;
+  return {u, n(){ if(spare!==null){const v=spare;spare=null;return v;}
+    let a,b,r; do{a=2*u()-1;b=2*u()-1;r=a*a+b*b;}while(r>=1||r===0);
+    const f=Math.sqrt(-2*Math.log(r)/r); spare=b*f; return a*f; }};
+};
+/* plain MC VaR: empirical alpha-quantile of losses */
+M.mcVar = function(L,alpha){
+  const s=Float64Array.from(L).sort(); const k=Math.ceil(alpha*s.length)-1; return s[k];
+};
+/* IS VaR: losses drawn from N(theta,1), weights w = phi(x)/phi(x-theta).
+   Solve (1/N) sum w 1{L>x} = 1-alpha (the step function is inverted exactly by sorting). */
+M.isVar = function(L,W,alpha){
+  const N=L.length, idx=Array.from({length:N},(_,i)=>i).sort((a,b)=>L[b]-L[a]);
+  const target=(1-alpha)*N; let acc=0;
+  for(const i of idx){ acc+=W[i]; if(acc>=target) return L[i]; }
+  return L[idx[N-1]];
+};
+M.essStats = function(W){
+  let s=0,s2=0,mx=0; for(const w of W){s+=w;s2+=w*w;if(w>mx)mx=w;}
+  return {ess:s*s/s2, maxShare:mx/s};
+};
+/* Dense two-phase simplex, Bland's rule.  min c.x  s.t. A x = b, x >= 0 */
+M.lp = function(c,A,b){
+  const m=A.length, n=c.length, EPS=1e-10, W=n+m+1;
+  const T=[]; // rows 0..m-1 constraints, row m = objective
+  for(let i=0;i<m;i++){
+    const row=new Float64Array(W), sg=b[i]<0?-1:1;
+    for(let j=0;j<n;j++) row[j]=sg*A[i][j];
+    row[n+i]=1; row[W-1]=sg*b[i]; T.push(row);
+  }
+  const basis=Array.from({length:m},(_,i)=>n+i);
+  function pivot(r,col){
+    const pr=T[r], pv=pr[col]; for(let j=0;j<W;j++) pr[j]/=pv;
+    for(let i=0;i<=m;i++){ if(i===r)continue; const f=T[i][col]; if(f!==0){const row=T[i]; for(let j=0;j<W;j++) row[j]-=f*pr[j];} }
+    basis[r]=col;
+  }
+  function run(allowed){
+    for(let it=0;it<5000;it++){
+      const obj=T[m]; let col=-1;
+      for(let j=0;j<W-1;j++){ if(allowed(j)&&obj[j]<-EPS){col=j;break;} }
+      if(col<0) return true;
+      let r=-1,best=Infinity;
+      for(let i=0;i<m;i++){ const a=T[i][col]; if(a>EPS){const q=T[i][W-1]/a; if(q<best-1e-12||(Math.abs(q-best)<=1e-12&&basis[i]<basis[r])){best=q;r=i;}} }
+      if(r<0) return false; // unbounded
+      pivot(r,col);
+    }
+    return false;
+  }
+  // phase 1: minimise sum of artificials
+  const obj=new Float64Array(W);
+  for(let i=0;i<m;i++) for(let j=0;j<W;j++) if(j<n||j===W-1) obj[j]-=T[i][j];
+  T.push(obj);
+  run(()=>true);
+  if(T[m][W-1]< -1e-8) return {ok:false};
+  for(let i=0;i<m;i++){ if(basis[i]>=n){ let col=-1; for(let j=0;j<n;j++) if(Math.abs(T[i][j])>EPS){col=j;break;} if(col>=0) pivot(i,col); } }
+  // phase 2
+  const o2=new Float64Array(W); for(let j=0;j<n;j++) o2[j]=c[j];
+  for(let i=0;i<m;i++){ const bj=basis[i]; if(bj<n&&c[bj]!==0){ const f=c[bj]; for(let j=0;j<W;j++) o2[j]-=f*T[i][j]; } }
+  T[m]=o2;
+  if(!run(j=>j<n)) return {ok:false};
+  const x=new Float64Array(n); for(let i=0;i<m;i++) if(basis[i]<n) x[basis[i]]=T[i][W-1];
+  let v=0; for(let j=0;j<n;j++) v+=c[j]*x[j];
+  return {ok:true,x,val:v};
+};
+/* Discrete moment matching on a grid: CDF envelopes and VaR bracket.
+   moments: E[L^k] of the reference model (standardised units), k=0..d */
+M.dmm = function(d, alpha, grid, moments, xs){
+  const S=4; // scale powers for conditioning
+  const A=[],b=[];
+  for(let k=0;k<=d;k++){ A.push(grid.map(g=>Math.pow(g/S,k))); b.push(moments[k]/Math.pow(S,k)); }
+  const lo=[],hi=[]; let extremal=null, varLo=null, varHi=null;
+  for(const x of xs){
+    const c=grid.map(g=>g<=x+1e-12?1:0);
+    const rmin=M.lp(c,A,b), rmax=M.lp(c.map(v=>-v),A,b);
+    const fl=rmin.ok?Math.min(1,Math.max(0,rmin.val)):NaN, fh=rmax.ok?Math.min(1,Math.max(0,-rmax.val)):NaN;
+    lo.push(fl); hi.push(fh);
+    if(varLo===null && fh>=alpha-1e-9) varLo=x;
+    if(varHi===null && fl>=alpha-1e-9) varHi=x;
+    if(varHi===null && rmin.ok) extremal={x, p:rmin.x};
+  }
+  return {lo,hi,varLo,varHi,extremal};
+};
+M.gaussMoments = d => { const m=[1]; for(let k=1;k<=d;k++){ m.push(k%2?0:m[k-2]*(k-1)); } return m; };
+if(typeof self!=="undefined") self.TailMath=M;
+
+
+</script>
+<script>
+(function(){
+"use strict";
+const SIG = 1.08; // daily vol in %, implied by Table 1
+const S = { nu:5, alpha:0.995, d:4, seed:11 };
+const dmmCache = {}, isCache = {};
+const $ = id => document.getElementById(id);
+const pct = s => (s*SIG).toFixed(2)+"%";
+const NS = "http://www.w3.org/2000/svg";
+const MATH = window.TailMath;
+
+/* ---------- worker: LPs and Monte Carlo off the main thread ---------- */
+function workerMain(self){
+  const M = self.TailMath;
+  const grid=[]; for(let i=0;i<=200;i++) grid.push(-8+i*0.1);
+  const xs=[];   for(let i=0;i<=200;i++) xs.push(i*0.05);
+  self.onmessage = function(e){
+    const m = e.data;
+    if(m.type==="dmm"){
+      const d=m.d, Sc=4, mom=M.gaussMoments(d), A=[], b=[];
+      for(let k=0;k<=d;k++){ A.push(grid.map(g=>Math.pow(g/Sc,k))); b.push(mom[k]/Math.pow(Sc,k)); }
+      const lo=new Float64Array(xs.length), hi=new Float64Array(xs.length), atoms=[];
+      xs.forEach((x,i)=>{
+        const c=grid.map(g=>g<=x+1e-12?1:0);
+        const r1=M.lp(c,A,b), r2=M.lp(c.map(v=>-v),A,b);
+        lo[i]=r1.ok?Math.min(1,Math.max(0,r1.val)):NaN;
+        hi[i]=r2.ok?Math.min(1,Math.max(0,-r2.val)):NaN;
+        const at=[]; if(r1.ok) r1.x.forEach((p,j)=>{ if(p>1e-9) at.push([grid[j],p]); });
+        atoms.push(at);
+      });
+      self.postMessage({type:"dmm", d, xs, lo, hi, atoms});
+    }
+    if(m.type==="is"){
+      const a=m.alpha, z=M.ninv(a), N=10000, R=M.rng(m.seed), reps=100;
+      const isEst=[], mcEst=[]; let sample=null, stats=null;
+      const L=new Float64Array(N), W=new Float64Array(N), P=new Float64Array(N);
+      for(let r=0;r<reps;r++){
+        for(let i=0;i<N;i++){ const x=R.n()+z; L[i]=x; W[i]=Math.exp(-z*x+z*z/2); P[i]=R.n(); }
+        // bracketing + bisection on the weighted tail probability
+        let lo=0, hi=12; const tgt=(1-a)*N;
+        for(let it=0;it<48;it++){ const mid=(lo+hi)/2; let s=0; for(let i=0;i<N;i++) if(L[i]>mid) s+=W[i]; if(s>tgt) lo=mid; else hi=mid; }
+        isEst.push((lo+hi)/2);
+        mcEst.push(M.mcVar(P,a));
+        if(r===0){
+          stats=M.essStats(W); let tot=0; for(let i=0;i<N;i++) tot+=W[i];
+          sample=[]; for(let i=0;i<300;i++) sample.push([L[i], W[i]/tot]);
+        }
+      }
+      self.postMessage({type:"is", alpha:a, seed:m.seed, isEst, mcEst, sample, stats, z});
+    }
+  };
+}
+const workerSrc = document.getElementById("mathsrc").textContent + "\n(" + workerMain.toString() + ")(self);";
+let worker = null;
+try { worker = new Worker(URL.createObjectURL(new Blob([workerSrc],{type:"text/javascript"}))); }
+catch(err){ worker = null; }
+const pending = new Set();
+function request(msg){
+  const key = msg.type+":"+(msg.d||"")+(msg.alpha||"")+":"+(msg.seed||"");
+  if(pending.has(key)) return; pending.add(key);
+  if(worker) worker.postMessage(msg);
+  else setTimeout(()=>{ // fallback: same code on the main thread
+    const ctx={TailMath:MATH, postMessage:d=>handle({data:d})};
+    workerMain(ctx); ctx.onmessage({data:msg});
+  },30);
+}
+function handle(e){
+  const m=e.data;
+  if(m.type==="dmm"){ dmmCache[m.d]=m; pending.delete("dmm:"+m.d+":"); if(m.d===S.d) renderDMM(); }
+  if(m.type==="is"){ isCache[m.alpha+":"+m.seed]=m; pending.delete("is:"+m.alpha+":"+m.seed); if(m.alpha===S.alpha && m.seed===S.seed) renderIS(); }
+}
+if(worker) worker.onmessage = handle;
+
+/* ---------- tiny SVG chart kit ---------- */
+function el(tag, attrs, parent, text){
+  const n=document.createElementNS(NS,tag);
+  for(const k in attrs) n.setAttribute(k, attrs[k]);
+  if(text!=null) n.textContent=text;
+  if(parent) parent.appendChild(n);
+  return n;
+}
+let clipId=0;
+function frame(host, h, m){
+  host.querySelectorAll("svg,.tip").forEach(n=>n.remove());
+  const w=Math.max(300, host.clientWidth||700);
+  const svg=el("svg",{viewBox:`0 0 ${w} ${h}`,width:w,height:h,role:"img"},host);
+  const tip=document.createElement("div"); tip.className="tip"; tip.hidden=true; host.appendChild(tip);
+  const id="c"+(++clipId);
+  el("rect",{x:m.l,y:m.t,width:w-m.l-m.r,height:h-m.t-m.b},el("clipPath",{id},el("defs",{},svg)));
+  return {svg,w,h,m,tip,clip:`url(#${id})`, iw:w-m.l-m.r, ih:h-m.t-m.b};
+}
+const lin=(d0,d1,r0,r1)=>v=>r0+(v-d0)/(d1-d0)*(r1-r0);
+const logs=(d0,d1,r0,r1)=>v=>r0+(Math.log10(Math.max(v,1e-300))-Math.log10(d0))/(Math.log10(d1)-Math.log10(d0))*(r1-r0);
+function path(pts){ let s=""; pts.forEach((p,i)=>{ if(isFinite(p[1])) s+=(s===""?"M":"L")+p[0].toFixed(1)+","+p[1].toFixed(1); }); return s; }
+const isPhone=()=>window.innerWidth<560;
+function xAxisPct(f, x, lo, hi, step){
+  const y=f.h-f.m.b;
+  el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:y,y2:y,stroke:"var(--ink)","stroke-width":1},f.svg);
+  const s0=Math.ceil(lo*SIG/step)*step;
+  for(let v=s0; v<=hi*SIG+1e-9; v+=step){
+    const px=x(v/SIG);
+    el("line",{x1:px,x2:px,y1:y,y2:y+4,stroke:"var(--ink)"},f.svg);
+    el("text",{x:px,y:y+16,"text-anchor":"middle"},f.svg,(Math.round(v*10)/10)+"%");
+  }
+}
+function yAxisLog(f, y, d0, d1, fmt){
+  for(let e=Math.ceil(Math.log10(d0)); e<=Math.floor(Math.log10(d1)); e++){
+    const v=Math.pow(10,e), py=y(v);
+    el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:py,y2:py,stroke:"var(--grid)"},f.svg);
+    el("text",{x:f.m.l-6,y:py+3.5,"text-anchor":"end"},f.svg,fmt(v));
+  }
+}
+const pctLbl=v=>{ const p=v*100; return (p>=1?p.toFixed(0):p>=0.1?p.toFixed(1):p>=0.01?p.toFixed(2):p.toFixed(3))+"%"; };
+function hover(f, onMove){
+  const r=el("rect",{x:f.m.l,y:f.m.t,width:f.iw,height:f.ih,fill:"transparent"},f.svg);
+  const cross=el("line",{y1:f.m.t,y2:f.h-f.m.b,stroke:"var(--ink)","stroke-width":1,"stroke-dasharray":"2 3",visibility:"hidden","pointer-events":"none"},f.svg);
+  function move(ev){
+    const b=f.svg.getBoundingClientRect(), sx=f.w/b.width;
+    const px=(ev.clientX-b.left)*sx, py=(ev.clientY-b.top)*sx;
+    if(px<f.m.l||px>f.w-f.m.r){ leave(); return; }
+    const out=onMove(px,py); if(!out){ leave(); return; }
+    cross.setAttribute("x1",out.x??px); cross.setAttribute("x2",out.x??px); cross.setAttribute("visibility",out.noCross?"hidden":"visible");
+    f.tip.innerHTML=out.html; f.tip.hidden=false;
+    f.tip.style.left=((out.x??px)/sx)+"px"; f.tip.style.top=(py/sx)+"px";
+    f.tip.classList.toggle("flip", px>f.w*0.55);
+  }
+  function leave(){ f.tip.hidden=true; cross.setAttribute("visibility","hidden"); }
+  r.addEventListener("pointermove",move); r.addEventListener("pointerdown",move); r.addEventListener("pointerleave",leave);
+}
+function label(f, x, y, txt, cls, anchor){ return el("text",{x,y,"text-anchor":anchor||"start",class:"lbl "+cls},f.svg,txt); }
+
+/* ---------- section 1: the tail gap ---------- */
+function renderTail(){
+  const a=S.alpha, nu=S.nu, zg=MATH.ninv(a), zt=MATH.tinv(a,nu);
+  $("gGauss").textContent=pct(zg); $("gTrue").textContent=pct(zt);
+  $("gGap").textContent=((1-zg/zt)*100).toFixed(1)+"%";
+  const h=isPhone()?260:320, f=frame($("pTail"),h,{l:52,r:18,t:14,b:34});
+  f.svg.setAttribute("aria-label",`Tail probability of the 1-day loss: Gaussian VaR ${pct(zg)} versus Student-t VaR ${pct(zt)} at ${a*100}%`);
+  const X0=0.5,X1=6.2,Y0=1e-5,Y1=0.3;
+  const x=lin(X0,X1,f.m.l,f.w-f.m.r), y=logs(Y0,Y1,f.h-f.m.b,f.m.t);
+  yAxisLog(f,y,Y0,Y1,pctLbl); xAxisPct(f,x,X0,X1,1);
+  el("text",{x:f.w-f.m.r,y:f.h-4,"text-anchor":"end"},f.svg,"1-day loss →");
+  // gap band
+  el("rect",{x:x(zg),y:f.m.t,width:Math.max(1,x(zt)-x(zg)),height:f.ih,fill:"var(--red-wash)"},f.svg);
+  const g=el("g",{"clip-path":f.clip},f.svg);
+  const xs=[]; for(let i=0;i<=240;i++) xs.push(X0+(X1-X0)*i/240);
+  el("path",{d:path(xs.map(v=>[x(v),y(MATH.nsf(v))])),fill:"none",stroke:"var(--ink)","stroke-width":2},g);
+  el("path",{d:path(xs.map(v=>[x(v),y(MATH.tsf(v,nu))])),fill:"none",stroke:"var(--red)","stroke-width":2.25},g);
+  const ya=y(1-a);
+  el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:ya,y2:ya,stroke:"var(--ink)","stroke-dasharray":"5 4"},f.svg);
+  el("text",{x:f.m.l+6,y:ya-6},f.svg,`1 − α = ${pctLbl(1-a)}`);
+  [[zg,"var(--ink)"],[zt,"var(--red)"]].forEach(([v,c])=>{
+    el("line",{x1:x(v),x2:x(v),y1:ya,y2:f.h-f.m.b,stroke:c,"stroke-width":1.5},f.svg);
+    el("circle",{cx:x(v),cy:ya,r:5,fill:c,stroke:"var(--paper)","stroke-width":2},f.svg);
+  });
+  // direct labels
+  const lx=X1-0.25;
+  label(f,f.w-f.m.r-4,Math.min(f.h-f.m.b-30,Math.max(f.m.t+12,y(MATH.tsf(lx,nu))-10)),`Student-t, ν = ${nu}`,"red","end");
+  const lg=1.6; label(f,x(lg)+6,y(MATH.nsf(lg))+16,"Gaussian","ink");
+  label(f,(x(zg)+x(zt))/2,f.h-f.m.b-8,"gap","red","middle");
+  hover(f,(px)=>{
+    const v=X0+(px-f.m.l)/f.iw*(X1-X0), pg=MATH.nsf(v), pt=MATH.tsf(v,nu);
+    return {html:`loss ≥ ${pct(v)}<br>Gaussian ${pctLbl(pg)}<br>Student-t ${pctLbl(pt)}<br>t / Gaussian ×${(pt/pg).toFixed(pt/pg<10?2:0)}`};
+  });
+}
+
+/* ---------- section 2: importance sampling ---------- */
+function renderIS(){
+  const a=S.alpha, nu=S.nu, z=MATH.ninv(a), zt=MATH.tinv(a,nu);
+  const data=isCache[a+":"+S.seed];
+  $("iTrue").textContent=pct(zt);
+  if(!data){ $("isBusy").textContent="Simulating 100 × 10,000 draws…"; request({type:"is",alpha:a,seed:S.seed}); drawDensity(null); drawStrip(null); return; }
+  $("isBusy").textContent="";
+  const mean=v=>v.reduce((s,q)=>s+q,0)/v.length, sd=v=>{const m=mean(v);return Math.sqrt(v.reduce((s,q)=>s+(q-m)*(q-m),0)/(v.length-1));};
+  const mIS=mean(data.isEst);
+  $("iIS").textContent=pct(mIS);
+  $("iBias").textContent=((mIS/zt-1)*100).toFixed(1)+"%";
+  $("iVR").textContent="×"+Math.round(Math.pow(sd(data.mcEst)/sd(data.isEst),2));
+  $("iESS").textContent=Math.round(data.stats.ess);
+  drawDensity(data); drawStrip(data);
+}
+function drawDensity(data){
+  const a=S.alpha, nu=S.nu, z=MATH.ninv(a);
+  const top=isPhone()?180:220, bot=80, gapH=26, h=top+gapH+bot;
+  const f=frame($("pDens"),h,{l:52,r:18,t:14,b:34});
+  f.svg.setAttribute("aria-label","Model density, tilted sampling density and true density of the loss, with likelihood weights of sampled draws");
+  const X0=-4,X1=6.5, x=lin(X0,X1,f.m.l,f.w-f.m.r);
+  const y=lin(0,0.43,f.m.t+top-14,f.m.t);
+  const xs=[]; for(let i=0;i<=260;i++) xs.push(X0+(X1-X0)*i/260);
+  [0.1,0.2,0.3,0.4].forEach(v=>{ el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:y(v),y2:y(v),stroke:"var(--grid)"},f.svg); });
+  el("text",{x:f.m.l-6,y:f.m.t+8,"text-anchor":"end"},f.svg,"density");
+  el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:y(0),y2:y(0),stroke:"var(--ink)"},f.svg);
+  // tail region beyond target
+  el("rect",{x:x(z),y:f.m.t,width:f.w-f.m.r-x(z),height:top-14,fill:"var(--band)"},f.svg);
+  el("text",{x:f.w-f.m.r-4,y:f.m.t+12,"text-anchor":"end"},f.svg,"beyond model VaR");
+  el("path",{d:path(xs.map(v=>[x(v),y(MATH.npdf(v))])),fill:"none",stroke:"var(--ink)","stroke-width":2},f.svg);
+  el("path",{d:path(xs.map(v=>[x(v),y(MATH.npdf(v-z))])),fill:"none",stroke:"var(--ink)","stroke-width":1.75,"stroke-dasharray":"6 4"},f.svg);
+  el("path",{d:path(xs.map(v=>[x(v),y(MATH.tpdf(v,nu))])),fill:"none",stroke:"var(--red)","stroke-width":1.75},f.svg);
+  label(f,x(-1.2),y(MATH.npdf(-1.2))-8,"model N(μ, σ²)","ink","end");
+  label(f,x(z+1.15)+4,y(MATH.npdf(1.15))-6,"tilted N(μ − θ, σ²)","ink");
+  label(f,x(0.12)+4,y(MATH.tpdf(0,nu))-6,`true t, ν = ${nu}`,"red");
+  // weights panel
+  const by=f.m.t+top+gapH, base=by+bot-4;
+  el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:base,y2:base,stroke:"var(--ink)"},f.svg);
+  el("text",{x:f.m.l-6,y:by+8,"text-anchor":"end"},f.svg,"weight");
+  if(data){
+    const mx=Math.max(...data.sample.map(s=>s[1]));
+    const yw=lin(0,mx,base,by);
+    data.sample.forEach(([L,w])=>{ if(L<X0||L>X1) return; el("line",{x1:x(L),x2:x(L),y1:base,y2:yw(w),stroke:w>mx*0.25?"var(--red)":"var(--ink)","stroke-width":1.25,"stroke-opacity":w>mx*0.25?1:0.55},f.svg); });
+    el("text",{x:f.w-f.m.r,y:by+8,"text-anchor":"end"},f.svg,`largest share of total weight ${(data.stats.maxShare*100).toFixed(1)}% (this run)`);
+  } else el("text",{x:(f.m.l+f.w-f.m.r)/2,y:base-24,"text-anchor":"middle"},f.svg,"simulating…");
+  xAxisPct(f,x,X0,X1,2);
+  el("text",{x:f.w-f.m.r,y:f.h-4,"text-anchor":"end"},f.svg,"1-day loss →");
+  hover(f,(px)=>{
+    const v=X0+(px-f.m.l)/f.iw*(X1-X0);
+    return {html:`loss ${pct(v)}<br>model ${MATH.npdf(v).toFixed(3)}<br>tilted ${MATH.npdf(v-z).toFixed(3)}<br>true t ${MATH.tpdf(v,nu).toFixed(3)}<br>weight w(x) ${Math.exp(-z*v+z*z/2).toPrecision(3)}`};
+  });
+}
+function drawStrip(data){
+  const a=S.alpha, nu=S.nu, z=MATH.ninv(a), zt=MATH.tinv(a,nu);
+  const h=190, f=frame($("pStrip"),h,{l:isPhone()?86:130,r:18,t:30,b:34});
+  f.svg.setAttribute("aria-label","VaR estimates from 100 replications of plain Monte Carlo and importance sampling");
+  let all=[z,zt]; if(data) all=all.concat(data.mcEst,data.isEst);
+  const X0=Math.min(...all)-0.08, X1=Math.max(...all)+0.08, x=lin(X0,X1,f.m.l,f.w-f.m.r);
+  const rows=[["Plain MC",f.m.t+28,data&&data.mcEst],["Importance sampling",f.m.t+82,data&&data.isEst]];
+  rows.forEach(([name,ry])=>{ el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:ry,y2:ry,stroke:"var(--grid)"},f.svg); el("text",{x:f.m.l-10,y:ry+4,"text-anchor":"end",class:"lbl ink"},f.svg,isPhone()&&name.length>10?"IS":name); });
+  el("line",{x1:x(z),x2:x(z),y1:f.m.t-6,y2:f.h-f.m.b,stroke:"var(--ink)","stroke-dasharray":"5 4"},f.svg);
+  el("line",{x1:x(zt),x2:x(zt),y1:f.m.t-6,y2:f.h-f.m.b,stroke:"var(--red)","stroke-width":2},f.svg);
+  label(f,x(z)-6,f.m.t-12,"Gaussian VaR","ink","end");
+  label(f,x(zt)-6,f.h-f.m.b-8,`true VaR, ν = ${nu}`,"red","end");
+  const dots=[];
+  if(data){
+    const R=MATH.rng(3);
+    rows.forEach(([,ry,est])=>est.forEach(v=>{ const jy=ry+(R.u()-0.5)*20; el("circle",{cx:x(v),cy:jy,r:3.5,fill:"var(--ink)","fill-opacity":0.45,stroke:"var(--paper)","stroke-width":1},f.svg); dots.push([x(v),jy,v]); }));
+  } else el("text",{x:(f.m.l+f.w-f.m.r)/2,y:f.m.t+58,"text-anchor":"middle"},f.svg,"simulating…");
+  const step=X1-X0>0.8?0.2:0.1; xAxisPct(f,x,X0,X1,step);
+  hover(f,(px,py)=>{
+    let best=null,bd=1e9; dots.forEach(d=>{ const dd=Math.hypot(d[0]-px,d[1]-py); if(dd<bd){bd=dd;best=d;} });
+    if(!best||bd>18) return null;
+    return {x:best[0],noCross:true,html:`estimate ${pct(best[2])}<br>vs truth ${((best[2]/zt-1)*100).toFixed(1)}%`};
+  });
+}
+
+/* ---------- section 3: discrete moment matching ---------- */
+function readVaR(m,a){
+  let lo=null,hi=null,ix=-1;
+  for(let i=0;i<m.xs.length;i++){ if(lo===null&&m.hi[i]>=a-1e-9) lo=m.xs[i]; if(hi===null&&m.lo[i]>=a-1e-9){hi=m.xs[i];} if(hi===null) ix=i; }
+  return {lo,hi,ix};
+}
+function renderDMM(){
+  const a=S.alpha, nu=S.nu, zt=MATH.tinv(a,nu), zg=MATH.ninv(a), m=dmmCache[S.d];
+  document.querySelectorAll("#dChips .chip").forEach(c=>c.setAttribute("aria-pressed",String(+c.dataset.d===S.d)));
+  $("dTrue").textContent=pct(zt);
+  if(!m){ $("dBusy").textContent=`Solving ${2*201} linear programs…`; request({type:"dmm",d:S.d}); ["dLo","dHi"].forEach(i=>$(i).textContent="–"); drawDmm(null); drawAtoms(null); return; }
+  $("dBusy").textContent="";
+  const r=readVaR(m,a);
+  $("dLo").textContent=r.lo===null?"–":pct(r.lo);
+  $("dHi").textContent=r.hi===null?"> "+pct(10):pct(r.hi);
+  const inside=r.lo!==null&&zt>=r.lo&&(r.hi===null||zt<=r.hi);
+  const pill=$("dPill"); pill.className="pill "+(inside?"ok":"miss"); pill.textContent=inside?"✓ brackets the true VaR":"✕ misses the true VaR";
+  $("dWidth").textContent=r.hi===null?"upper bound beyond the grid":`bracket width ${((r.hi-r.lo)*SIG).toFixed(2)} pts`;
+  drawDmm(m,r); drawAtoms(m,r);
+}
+function drawDmm(m,r){
+  const a=S.alpha, nu=S.nu, zt=MATH.tinv(a,nu);
+  const h=isPhone()?260:320, f=frame($("pDmm"),h,{l:52,r:18,t:14,b:34});
+  f.svg.setAttribute("aria-label",`Moment-matching bounds on the tail probability with ${S.d} moments`);
+  const X0=0,X1=7.5,Y0=1e-4,Y1=1;
+  const x=lin(X0,X1,f.m.l,f.w-f.m.r), y=logs(Y0,Y1,f.h-f.m.b,f.m.t);
+  yAxisLog(f,y,Y0,Y1,pctLbl); xAxisPct(f,x,X0,X1,1);
+  el("text",{x:f.w-f.m.r,y:f.h-4,"text-anchor":"end"},f.svg,"1-day loss →");
+  const g=el("g",{"clip-path":f.clip},f.svg);
+  if(m){
+    const up=[],dn=[];
+    m.xs.forEach((v,i)=>{ if(v>X1+0.05) return; up.push([x(v),y(Math.max(Y0/2,1-m.lo[i]))]); dn.push([x(v),y(Math.max(Y0/2,1-m.hi[i]))]); });
+    el("path",{d:path(up)+path(dn.slice().reverse()).replace(/^M/,"L")+"Z",fill:"var(--band)",stroke:"none"},g);
+    el("path",{d:path(up),fill:"none",stroke:"var(--ink)","stroke-width":1.25},g);
+    el("path",{d:path(dn),fill:"none",stroke:"var(--ink)","stroke-width":1.25},g);
+  }
+  const xs=[]; for(let i=0;i<=240;i++) xs.push(X0+(X1-X0)*i/240);
+  el("path",{d:path(xs.map(v=>[x(v),y(MATH.nsf(v))])),fill:"none",stroke:"var(--ink)","stroke-width":2,"stroke-dasharray":"1 3","stroke-linecap":"round"},g);
+  el("path",{d:path(xs.map(v=>[x(v),y(MATH.tsf(v,nu))])),fill:"none",stroke:"var(--red)","stroke-width":2.25},g);
+  const ya=y(1-a);
+  el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:ya,y2:ya,stroke:"var(--ink)","stroke-dasharray":"5 4","stroke-opacity":0.6},f.svg);
+  el("text",{x:f.m.l+6,y:ya+14},f.svg,`1 − α = ${pctLbl(1-a)}`);
+  label(f,x(1.1),y(MATH.nsf(1.1))+16,"Gaussian","ink");
+  const lt=Math.min(6.2,zt+0.6); label(f,x(lt),y(MATH.tsf(lt,nu))+16,`true t, ν = ${nu}`,"red");
+  if(m){
+    label(f,x(0.25),y(0.5),`feasible band, d = ${S.d}`,"ink");
+    if(r.lo!==null){
+      const x1=x(r.lo), x2=r.hi===null?f.w-f.m.r:x(Math.min(r.hi,X1));
+      el("line",{x1,x2,y1:ya,y2:ya,stroke:"var(--ink)","stroke-width":4},f.svg);
+      [x1,x2].forEach(px=>el("line",{x1:px,x2:px,y1:ya-9,y2:ya+9,stroke:"var(--ink)","stroke-width":2.5},f.svg));
+      el("circle",{cx:x(zt),cy:ya,r:5.5,fill:"var(--red)",stroke:"var(--paper)","stroke-width":2},f.svg);
+      label(f,x1,ya-14,"lower","ink","middle"); if(r.hi!==null&&r.hi<=X1) label(f,x2,ya-14,"upper","ink","middle");
+    }
+  }
+  hover(f,(px)=>{
+    const v=X0+(px-f.m.l)/f.iw*(X1-X0); let s=`loss ≥ ${pct(v)}<br>Gaussian ${pctLbl(MATH.nsf(v))}<br>Student-t ${pctLbl(MATH.tsf(v,nu))}`;
+    if(m){ const i=Math.min(m.xs.length-1,Math.max(0,Math.round(v/0.05))); s+=`<br>band ${pctLbl(1-m.hi[i])} – ${pctLbl(1-m.lo[i])}`; }
+    return {html:s};
+  });
+}
+function drawAtoms(m,r){
+  const h=isPhone()?190:210, f=frame($("pAtoms"),h,{l:52,r:18,t:20,b:34});
+  f.svg.setAttribute("aria-label","Discrete worst-case distribution behind the upper VaR bound");
+  const X0=-8,X1=12,Y0=1e-6,Y1=1, x=lin(X0,X1,f.m.l,f.w-f.m.r), y=logs(Y0,Y1,f.h-f.m.b,f.m.t);
+  yAxisLog(f,y,Y0,Y1,v=>v>=1e-2?pctLbl(v):"1e"+Math.round(Math.log10(v)));
+  xAxisPct(f,x,X0,X1,isPhone()?5:2.5);
+  el("text",{x:f.w-f.m.r,y:f.h-4,"text-anchor":"end"},f.svg,"1-day loss →");
+  if(!m||r.ix<0){ el("text",{x:(f.m.l+f.w-f.m.r)/2,y:f.m.t+60,"text-anchor":"middle"},f.svg,m?"no binding distribution in range":"solving…"); return; }
+  const at=m.atoms[r.ix], xb=m.xs[r.ix], base=f.h-f.m.b;
+  el("line",{x1:x(xb),x2:x(xb),y1:f.m.t,y2:base,stroke:"var(--red)","stroke-dasharray":"4 4"},f.svg);
+  el("text",{x:x(xb)-6,y:f.m.t-6,"text-anchor":"end"},f.svg,`evaluated just below the upper bound`);
+  const pts=[];
+  at.forEach(([gx,p])=>{
+    const tail=gx>xb; const c=tail?"var(--red)":"var(--ink)";
+    el("line",{x1:x(gx),x2:x(gx),y1:base,y2:y(Math.max(p,Y0)),stroke:c,"stroke-width":2},f.svg);
+    el("circle",{cx:x(gx),cy:y(Math.max(p,Y0)),r:4.5,fill:c,stroke:"var(--paper)","stroke-width":1.5},f.svg);
+    pts.push([x(gx),y(Math.max(p,Y0)),gx,p]);
+    if(tail) label(f,x(gx)+8,y(p)+4,`${(p*100).toFixed(2)}% at ${pct(gx)}`,"red");
+  });
+  hover(f,(px,py)=>{
+    let best=null,bd=1e9; pts.forEach(q=>{const dd=Math.abs(q[0]-px); if(dd<bd){bd=dd;best=q;}});
+    if(!best||bd>20) return null;
+    return {x:best[0],html:`atom at ${pct(best[2])}<br>mass ${best[3]<1e-3?best[3].toExponential(2):(best[3]*100).toFixed(2)+"%"}`};
+  });
+}
+
+/* ---------- section 4: paper table ---------- */
+const T1=[[5,.990,.0281,.0252,.0017,-.0029,154,.056],[5,.995,.0339,.0283,.0022,-.0056,91,.081],[7,.990,.0273,.0246,.0013,-.0026,154,.056],[7,.995,.0320,.0276,.0013,-.0044,91,.081],[10,.990,.0266,.0249,.0010,-.0017,154,.056],[10,.995,.0307,.0276,.0009,-.0030,91,.081]];
+function renderTable(){
+  $("tbody").innerHTML=T1.map(r=>`<tr class="${r[0]===S.nu&&r[1]===S.alpha?"hl":""}"><td>${r[0]}</td><td>${(r[1]*100).toFixed(1)}%</td><td>${r[2].toFixed(4)}</td><td>${r[3].toFixed(4)}</td><td>${r[4].toFixed(4)}</td><td>${r[5].toFixed(4)}</td><td>${(r[5]/r[2]*100).toFixed(1)}%</td><td>${r[6]}</td><td>${r[7].toFixed(3)}</td></tr>`).join("");
+}
+
+/* ---------- controls ---------- */
+function syncControls(){
+  $("nu").value=S.nu; $("nuOut").textContent=S.nu;
+  document.querySelectorAll("#nuChips .chip").forEach(c=>c.setAttribute("aria-pressed",String(+c.dataset.nu===S.nu)));
+  document.querySelectorAll("#aChips .chip").forEach(c=>c.setAttribute("aria-pressed",String(+c.dataset.a===S.alpha)));
+}
+function renderAll(){ syncControls(); renderTail(); renderIS(); renderDMM(); renderTable(); }
+$("nu").addEventListener("input",e=>{ S.nu=+e.target.value; syncControls(); renderTail(); renderIS(); renderDMM(); renderTable(); });
+$("nuChips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; S.nu=+b.dataset.nu; renderAll(); });
+$("aChips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; S.alpha=+b.dataset.a; renderAll(); });
+$("dChips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return; S.d=+b.dataset.d; renderDMM(); });
+$("resample").addEventListener("click",()=>{ S.seed+=1; renderIS(); });
+let rt=0; window.addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(renderAll,120); });
+renderAll();
+// warm the cache for the other moment orders and α levels
+[2,3,5,6,7].forEach(d=>request({type:"dmm",d}));
+[0.99,0.999].forEach(al=>request({type:"is",alpha:al,seed:S.seed}));
+})();
+
+</script>
+</body></html>
