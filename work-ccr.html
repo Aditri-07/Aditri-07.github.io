@@ -50,7 +50,93 @@ li .star{margin-top:.3em}
 html,body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23dc3b2f' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23dc3b2f'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,auto}
 a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23a8231a' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23a8231a'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,pointer}
 
+
+/* ---- interactive tail-risk lab: ink-on-paper charts, red = the true (Student-t) world ---- */
+:root{ --band:rgba(22,21,20,.10); --red-wash:rgba(220,59,47,.14); --grid:rgba(22,21,20,.10); --axis:#8a847e; }
+.page{gap:30px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);
+  padding:10px 0;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center}
+.ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.ctl .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ctl output{font-family:var(--mono);font-size:13px;font-weight:500;min-width:3.2ch;font-variant-numeric:tabular-nums}
+.chips{display:inline-flex;gap:4px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:12px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:2px 10px;line-height:1.5}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip:hover{border-color:var(--red);color:var(--red)} .chip[aria-pressed="true"]:hover{color:var(--paper);background:var(--red);border-color:var(--red)}
+input[type=range]{accent-color:var(--red);width:150px;max-width:40vw}
+.btn{font-family:var(--sans);font-weight:800;font-size:13.5px;letter-spacing:-.01em;background:var(--ink);color:var(--paper);border:0;border-radius:2px;padding:6px 12px}
+.btn:hover{background:var(--red)}
+.lab{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.lab h2{margin:0;font-family:var(--sans);font-weight:800;font-size:clamp(26px,3.6vw,38px);letter-spacing:-.045em;line-height:1.05;display:flex;gap:.35em;align-items:baseline;text-wrap:balance}
+.lab h2 .star{width:.6em;height:.6em;flex:none}
+.lab .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.lab p{margin:0;max-width:64ch}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.read div{padding:10px 12px 10px 0;display:flex;flex-direction:column;gap:2px;min-width:0}
+.read b{font-family:var(--sans);font-weight:800;font-size:clamp(20px,2.6vw,26px);letter-spacing:-.04em;line-height:1.1;font-variant-numeric:tabular-nums}
+.read span{font-size:12.5px;color:var(--ink-soft)}
+.read .hot b{color:var(--red)}
+.plot{position:relative;width:100%;min-width:0}
+.plot svg{display:block;width:100%;height:auto;overflow:hidden}
+.plot text{font-family:var(--mono);font-size:10.5px;fill:var(--ink-soft)}
+.plot .lbl{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:-.01em}
+.plot .lbl.red{fill:var(--red)} .plot .lbl.ink{fill:var(--ink)}
+.cap{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);max-width:80ch;margin:0}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11.5px;line-height:1.5;padding:6px 9px;border-left:3px solid var(--red);white-space:nowrap;z-index:3;transform:translate(12px,-50%)}
+.tip.flip{transform:translate(calc(-100% - 12px),-50%)}
+.steps{list-style:none;counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;max-width:none;border-top:1px solid var(--rule)}
+.steps li{counter-increment:s;display:flex;flex-direction:column;gap:6px;padding:12px 14px 12px 0;border-bottom:1px solid var(--rule)}
+.steps li::before{content:counter(s);font-family:var(--display);font-weight:900;color:var(--red);font-size:28px;line-height:1}
+.steps code{font-family:var(--mono);font-size:12.5px;background:var(--paper-2);padding:1px 5px;border-radius:2px;overflow-wrap:anywhere}
+.steps span{font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid currentColor;width:max-content}
+.pill.ok{color:var(--ink)} .pill.miss{color:var(--red)}
+.busy{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);min-height:1.5em}
+.tbl{overflow-x:auto;border-top:2px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px 8px 0;text-align:right;border-bottom:1px solid var(--rule);font-size:14px}
+th{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+th:first-child,td:first-child{text-align:left}
+tr.hl td{color:var(--red);font-weight:800}
+tbody tr:hover td{background:var(--paper-2)}
+@media (max-width:560px){ .bar{gap:8px 16px} input[type=range]{width:110px} }
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 26px;min-width:0}
+.two.wide{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+@media (max-width:760px){.two.wide{grid-template-columns:minmax(0,1fr)}}
+code.eq{font-family:var(--mono);font-size:13px;background:var(--paper-2);padding:1px 6px;border-radius:2px;white-space:nowrap}
+.ivgrid{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px 28px;align-items:start}
+@media (max-width:640px){.ivgrid{grid-template-columns:minmax(0,1fr)}}
+.ivin{display:flex;flex-direction:column;gap:10px}
+.ivout{display:flex;flex-direction:column;gap:12px;min-width:0}
+label.f{display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft)}
+label.f input,.cbin input[type=number]{font:inherit;font-family:var(--mono);font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--ink);border-radius:2px;padding:6px 8px;width:100%}
+label.f input:focus-visible{outline:2px solid var(--red);outline-offset:1px}
+ol.newton{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:12px;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:4px 18px;max-width:none}
+ol.newton li{display:block}
+.regtab{display:flex;flex-direction:column;gap:10px;min-width:0}
+.regtab table{min-width:0}
+.regtab td,.regtab th{font-size:13px}
+td.sig,dd.sig{color:var(--ink);font-weight:800}
+dd.bad{color:var(--red)}
+.verdict{margin:0;font-family:var(--mono);font-size:12.5px;padding:3px 10px;border:1px solid currentColor;border-radius:999px;width:max-content;max-width:100%}
+.verdict.ok{color:var(--ink)} .verdict.miss{color:var(--red)}
+dl.diag{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:0;border-top:1px solid var(--rule)}
+dl.diag div{padding:7px 8px 7px 0;border-bottom:1px solid var(--rule)}
+dl.diag dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+dl.diag dd{margin:2px 0 0;font-size:15px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ctl output{min-width:4ch}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-2px;border-radius:50%}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.terms div{padding:8px 10px 8px 0;display:flex;flex-direction:column;gap:1px;min-width:0}
+.terms b{font-size:17px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.terms span{font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.04em}
+.node{cursor:inherit}
+.nodeinfo{font-family:var(--mono);font-size:12.5px}
+ul.lims{list-style:disc;padding-left:1.2em;display:block;max-width:66ch}ul.lims li{display:list-item;margin:0 0 8px}
 </style></head><body>
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <filter id="rough" x="-5%" y="-10%" width="110%" height="120%">
     <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n"/>
@@ -67,13 +153,80 @@ a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csv
     <div class="eyebrow"><svg class="star" width="0.8em" height="0.8em" aria-hidden="true"><use href="#spark"/></svg>counterparty credit risk</div>
     <h1 class="rough">Counterparty Credit Risk Exposure Engine</h1>
   </header>
-  <div class="tags"><span class="tag">Hull-White</span><span class="tag">Monte Carlo</span><span class="tag">CVA</span><span class="tag">SQL</span></div>
-  <p class="lede">A Monte Carlo exposure engine for a small book of corporate bonds and interest rate swaps: simulate rates and credit spreads, reprice every trade on every path, and roll it up into exposure profiles and CVA.</p>
-  <div class="figs"><div class="fig"><b>~$890K</b><span>CVA on a $21.7M book</span></div><div class="fig"><b>5,000</b><span>simulated paths over 10 years</span></div><div class="fig"><b>$7.6K/bp</b><span>portfolio DV01</span></div><div class="fig"><b>3.6bp</b><span>average curve fit error</span></div></div>
-  <ul><li><svg class="star" width="0.85em" height="0.85em" aria-hidden="true"><use href="#spark"/></svg><span>Hull-White short-rate dynamics on a SOFR/Treasury dual curve bootstrapped from WRDS and FRED data.</span></li><li><svg class="star" width="0.85em" height="0.85em" aria-hidden="true"><use href="#spark"/></svg><span>Expected Exposure and Potential Future Exposure at the 95th and 99th percentiles across the horizon.</span></li><li><svg class="star" width="0.85em" height="0.85em" aria-hidden="true"><use href="#spark"/></svg><span>DV01 and key-rate sensitivities, stress tests under rate and credit scenarios, and a SQL-backed pipeline documented in the spirit of SR 11-7.</span></li></ul>
+  <div class="tags"><span class="tag">Hull-White 1F</span><span class="tag">Monte Carlo</span><span class="tag">EE / PFE</span><span class="tag">CVA</span><span class="tag">DV01</span><span class="tag">Stress testing</span><span class="tag">Python</span></div>
+  <p class="lede">An IMM-style Monte Carlo engine for a small book of corporate bonds and interest rate swaps. It simulates the short rate and credit spreads jointly, reprices every trade on every path at every future date, and rolls the result into exposure profiles, CVA, sensitivities and stress tests. Every number on this page comes from the repository&#x27;s engine, run after the curve fix described below.</p>
+  <div class="figs"><div class="fig"><b>$2.95M</b><span>peak PFE₉₉ on the swap netting set, at 5 years</span></div><div class="fig"><b>+80%</b><span>swap-set peak PFE₉₉ under the 2020-style rate shock</span></div><div class="fig"><b>$1.48M vs $0.93M</b><span>CVA per counterparty vs blended: blending understates by ~37%</span></div><div class="fig"><b>5,000</b><span>paths, 40 quarterly steps, 10-year horizon</span></div></div>
+
+  <section class="lab" aria-labelledby="h-book">
+    <span class="kicker">The book</span>
+    <h2 id="h-book"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Twelve trades, one curve</h2>
+    <div class="terms"><div><b>6</b><span>corporate bonds · $22M notional</span></div><div><b>6</b><span>vanilla IRS · $85M notional</span></div><div><b>$21.7M</b><span>book MtM today</span></div><div><b>147–268 bp</b><span>bond issuer spreads</span></div><div><b>a = 0.06, σ = 1.1%</b><span>Hull-White parameters</span></div><div><b>60%</b><span>LGD</span></div></div>
+    <p>The sample run uses a synthetic, Nelson-Siegel-shaped curve as of mid-2025. FRED and WRDS loaders are wired into the repository, but the numbers here are not from live market data.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-how">
+    <span class="kicker">The engine</span>
+    <h2 id="h-how"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>From a curve to CVA</h2>
+    <ol class="steps">
+      <li><span>Bootstrap zero rates from par swap quotes; natural cubic spline for smooth forwards.</span><code>DF(t) = e^(−z(t)·t)</code></li>
+      <li><span>Hull-White short rate, with θ(t) fitted so the model reprices today&#x27;s curve. Bonds priced in closed form on every path.</span><code>dr = [θ(t) − a·r] dt + σ dW</code></li>
+      <li><span>One systematic GBM spread factor; each issuer&#x27;s spread scales off it, so spreads widen together.</span><code>s_i(t) = s_i(0) · S(t)/S(0)</code></li>
+      <li><span>Reprice the whole book on all 5,000 paths at all 41 dates; exposure is the positive part.</span><code>E(t) = max(MtM(t), 0)</code></li>
+      <li><span>EE is the mean, PFE the 95th and 99th percentile across paths, at each date.</span><code>EE(t) = 𝔼[E(t)]</code></li>
+      <li><span>Unilateral CVA, flat hazard from the credit triangle.</span><code>CVA = LGD · Σ EE · DF · ΔPD,  λ ≈ s / LGD</code></li>
+    </ol>
+  </section>
+
+  <section class="lab" aria-labelledby="h-exp">
+    <span class="kicker">Exposure</span>
+    <h2 id="h-exp"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Exposure profiles under stress</h2>
+    <p>The swap netting set shows the classic hump: rate diffusion grows exposure, then the shrinking stream of remaining payments pulls it back to zero. The sawtooth is the semi-annual payment dates, each one knocking out a slice of value. Switch to the full book and the picture is dominated by bond principal, which steps down as each bond matures.</p>
+    <div class="ctl"><span class="k">Netting set</span><span class="chips" id="setChips"><button class="chip" type="button" data-set="swap" aria-pressed="true">swaps only</button><button class="chip" type="button" data-set="book" aria-pressed="false">full book</button></span>
+      <span class="k">Scenario</span><span class="chips" id="scChips"><button class="chip" type="button" data-sc="base" aria-pressed="true">base</button><button class="chip" type="button" data-sc="2008_gfc" aria-pressed="false">2008-style</button><button class="chip" type="button" data-sc="2020_covid_rate_shock" aria-pressed="false">2020-style</button></span></div>
+    <div class="read" id="expRead"></div>
+    <div class="legend"><span><i style="background:var(--ink)"></i>EE</span><span><i style="background:var(--red)"></i>PFE₉₅</span><span><i style="background:var(--red-wash);border:1px solid var(--red)"></i>PFE₉₅–PFE₉₉ band</span><span><i style="background:transparent;border:1px dashed var(--axis)"></i>base EE (when stressed)</span></div>
+    <div class="plot" id="pExp"></div>
+    <p class="cap">2008-style: spreads ×3, spread vol ×2.5, rate vol ×1.6, rates −75 bp. 2020-style: rates −150 bp, rate vol ×2.2, spreads ×1.8. Stylized multipliers on the base calibration, not re-estimated from history.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-stress">
+    <span class="kicker">Stress testing</span>
+    <h2 id="h-stress"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Where stress actually shows up</h2>
+    <p>At the book level, peak PFE₉₉ barely moves: +6% and +8%. That is because bond principal, which is close to deterministic, swamps everything else. Isolate the swaps and the same scenarios raise peak exposure by 38% and 80%, and push the peak later. The 2020-style shock hits harder than 2008 despite smaller spread widening: rate vol more than doubles, and swaps carry no spread exposure in this setup.</p>
+    <div class="tbl"><table id="stressTbl"></table></div>
+  </section>
+
+  <section class="lab" aria-labelledby="h-cva">
+    <span class="kicker">CVA</span>
+    <h2 id="h-cva"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Blending hides the risk</h2>
+    <p>The quick approach treats the whole book as one counterparty at the average spread: <b>$0.93M</b>. Computing CVA name by name, each with its own exposure and default probability, gives <b>$1.48M</b>. CVA is a sum of products; blending turns it into a product of averages, which washes out exactly the case that matters, large exposure sitting with the widest-spread names.</p>
+    <div class="plot" id="pCva"></div>
+    <p class="cap">Per-name CVA, base scenario. 97% comes from the bonds: holding a bond means the full principal is at risk if the issuer defaults, so its &quot;exposure&quot; is large and always positive. Strictly, that is issuer (jump-to-default) risk rather than counterparty exposure; swaps are the textbook CCR case.</p>
+    <div class="tbl"><table id="riskTbl"></table></div>
+    <p class="cap">DV01 by parallel bump-and-reprice on today&#x27;s curve, independent of the simulation. Portfolio DV01 $7.6K per bp.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-bug">
+    <span class="kicker">Model validation</span>
+    <h2 id="h-bug"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>The bug the headline numbers hid</h2>
+    <p>The first version produced plausible CVA and PFE. The paths underneath were broken: the mean simulated short rate jumped from 2.8% to 45% in a single quarter and stayed there. The zero curve was clamped flat below its first tenor (3M), which put a kink in the forward curve at exactly 0.25 years. Hull-White&#x27;s θ(t) depends on the slope of the forward curve, so it spiked to 170% at that point, and the quarterly grid landed right on it.</p>
+    <div class="ctl"><span class="k">Show</span><span class="chips" id="bugChips"><button class="chip" type="button" data-b="theta" aria-pressed="true">θ(t)</button><button class="chip" type="button" data-b="rate" aria-pressed="false">mean short rate</button></span></div>
+    <div class="legend"><span><i style="background:var(--red)"></i>before fix</span><span><i style="background:var(--ink)"></i>after fix</span></div>
+    <div class="plot" id="pBug"></div>
+    <p class="cap" id="bugCap"></p>
+    <p>The fix was one line: let the spline run down to t = 0 instead of clamping. θ(t) now stays within ±2.4% and simulated rates track the curve at 3–5%. Because exposure on this book is dominated by bond principal, aggregate CVA only moved from $890K to $931K, which is exactly why it went unnoticed. Check the paths, not just the summary.</p>
+  </section>
+
+  <section class="lab" aria-labelledby="h-lim">
+    <span class="kicker">Scope</span>
+    <h2 id="h-lim"><svg class="star" aria-hidden="true"><use href="#spark"/></svg>Known simplifications</h2>
+    <ul class="lims"><li>Single curve for discounting and projection; no OIS/SOFR dual-curve split.</li><li>Flat hazard rate instead of a bootstrapped CDS survival curve.</li><li>One systematic spread factor; no idiosyncratic spread moves.</li><li>No wrong-way risk, no collateral or margining: uncollateralized exposure throughout.</li><li>Bonds and swaps netted together for illustration; real netting sets follow legal agreements, and held bonds are issuer risk.</li><li>Parallel DV01 only; no key-rate buckets.</li><li>Stress scenarios are parameter multipliers, not historical re-estimation.</li></ul>
+  </section>
+
   <div class="links"><a class="out" href="https://github.com/Aditri-07/counterparty-credit-risk-imm">repo ↗</a></div>
   <nav class="nav" aria-label="More projects"><a href="vol-surface.html">← volatility surfaces</a><a href="work-tail-risk.html">tail risk →</a></nav>
 </main>
+
 <script>
 (function(){
   function shake(el){ if(!el) return; el.classList.remove("shaking"); void el.getBoundingClientRect(); el.classList.add("shaking"); }
@@ -83,5 +236,103 @@ a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csv
     s.addEventListener("pointerdown",()=>shake(s));
   });
 })();
+</script>
+<script>
+/* ---- shared chart kit + stats (inlined into each page) ---- */
+const K = (function(){
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){ const n=document.createElementNS(NS,tag); for(const k in attrs) n.setAttribute(k,attrs[k]); if(text!=null) n.textContent=text; if(parent) parent.appendChild(n); return n; }
+function frame(host,h,m){ host.querySelectorAll("svg,.tip").forEach(n=>n.remove());
+  const w=Math.max(280,host.clientWidth||700), svg=el("svg",{viewBox:`0 0 ${w} ${h}`,width:w,height:h,role:"img"},host);
+  const tip=document.createElement("div"); tip.className="tip"; tip.hidden=true; host.appendChild(tip);
+  m=m||{l:50,r:16,t:14,b:32}; return {svg,w,h,m,tip,iw:w-m.l-m.r,ih:h-m.t-m.b}; }
+const lin=(d0,d1,r0,r1)=>v=>r0+(v-d0)/(d1-d0)*(r1-r0);
+function path(pts){ let s=""; for(const p of pts){ if(!isFinite(p[0])||!isFinite(p[1])) continue; s+=(s?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1); } return s; }
+function pt(f,ev){ const b=f.svg.getBoundingClientRect(), s=f.w/b.width; return [(ev.clientX-b.left)*s,(ev.clientY-b.top)*s,s]; }
+function tip(f,px,py,html){ const b=f.svg.getBoundingClientRect(), s=f.w/b.width; f.tip.innerHTML=html; f.tip.hidden=false;
+  f.tip.style.left=(px/s)+"px"; f.tip.style.top=(py/s)+"px"; f.tip.classList.toggle("flip",px>f.w*0.55); }
+function hover(f,fn){ const r=el("rect",{x:f.m.l,y:f.m.t,width:f.iw,height:f.ih,fill:"transparent"},f.svg);
+  const cross=el("line",{y1:f.m.t,y2:f.h-f.m.b,stroke:"var(--ink)","stroke-dasharray":"2 3",visibility:"hidden","pointer-events":"none"},f.svg);
+  const mv=ev=>{ const [px,py]=pt(f,ev); const o=fn(px,py); if(!o){ lv(); return; }
+    const x=o.x??px; cross.setAttribute("x1",x); cross.setAttribute("x2",x); cross.setAttribute("visibility",o.noCross?"hidden":"visible"); tip(f,x,py,o.html); };
+  const lv=()=>{ f.tip.hidden=true; cross.setAttribute("visibility","hidden"); };
+  r.addEventListener("pointermove",mv); r.addEventListener("pointerdown",mv); r.addEventListener("pointerleave",lv); return r; }
+function axisX(f,x,ticks,fmt,label){ const y=f.h-f.m.b; el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:y,y2:y,stroke:"var(--ink)"},f.svg);
+  ticks.forEach(v=>{ const px=x(v); el("line",{x1:px,x2:px,y1:y,y2:y+4,stroke:"var(--ink)"},f.svg); el("text",{x:px,y:y+16,"text-anchor":"middle"},f.svg,fmt(v)); });
+  if(label) el("text",{x:f.w-f.m.r,y:f.h-3,"text-anchor":"end"},f.svg,label); }
+function axisY(f,y,ticks,fmt,label){ ticks.forEach(v=>{ const py=y(v); el("line",{x1:f.m.l,x2:f.w-f.m.r,y1:py,y2:py,stroke:"var(--grid)"},f.svg); el("text",{x:f.m.l-6,y:py+3.5,"text-anchor":"end"},f.svg,fmt(v)); });
+  if(label) el("text",{x:f.m.l-6,y:f.m.t-4,"text-anchor":"end"},f.svg,label); }
+function nice(lo,hi,n){ const span=hi-lo||1, raw=span/(n||5), mag=Math.pow(10,Math.floor(Math.log10(raw))), st=[1,2,2.5,5,10].map(s=>s*mag).find(s=>s>=raw)||raw;
+  const out=[]; for(let v=Math.ceil(lo/st)*st; v<=hi+1e-9; v+=st) out.push(+v.toFixed(10)); return out; }
+function label(f,x,y,txt,cls,anchor){ return el("text",{x,y,"text-anchor":anchor||"start",class:"lbl "+(cls||"ink")},f.svg,txt); }
+return {el,frame,lin,path,pt,tip,hover,axisX,axisY,nice,label};
+})();
+
+const D={"profiles":{"base":{"book":[[21.68,22.089,21.569,22.1,21.555,22.153,21.716,22.334,11.879,12.321,11.917,12.312,6.871,6.927,6.879,6.941,6.898,6.965,6.935,7.013,5.989,5.98,5.985,5.97,5.975,5.966,5.975,5.962,1.103,0.927,1.069,0.879,1.035,0.848,1.018,0.816,1.002,0.8,1.004,0.799,0.0],[21.68,22.875,22.56,23.159,22.554,23.055,22.495,22.952,12.365,12.803,12.51,13.123,7.947,8.073,8.102,8.2,8.228,8.369,8.419,8.574,7.649,7.68,7.715,7.739,7.785,7.802,7.822,7.847,2.888,2.576,2.658,2.331,2.414,2.074,2.118,1.759,1.773,1.392,1.404,1.005,0.0],[21.68,23.21,22.906,23.506,22.883,23.39,22.734,23.114,12.476,12.895,12.649,13.349,8.277,8.442,8.475,8.61,8.712,8.827,8.889,9.102,8.163,8.223,8.26,8.307,8.319,8.423,8.453,8.541,3.572,3.211,3.259,2.912,2.961,2.585,2.549,2.108,2.081,1.631,1.574,1.091,0.0]],"swap":[[0.467,0.639,0.321,0.554,0.287,0.575,0.342,0.623,0.406,0.651,0.459,0.661,0.496,0.486,0.525,0.517,0.553,0.539,0.578,0.575,0.616,0.559,0.599,0.54,0.577,0.519,0.554,0.492,0.522,0.388,0.455,0.317,0.382,0.247,0.307,0.166,0.215,0.078,0.115,0.004,0.0],[0.467,0.777,0.431,0.591,0.312,0.677,0.577,1.019,0.942,1.404,1.332,1.796,1.761,1.775,1.868,1.859,1.972,2.002,2.129,2.154,2.232,2.151,2.227,2.128,2.186,2.068,2.128,2.0,2.054,1.74,1.817,1.47,1.54,1.187,1.214,0.835,0.845,0.441,0.443,0.017,0.0],[0.467,0.826,0.451,0.591,0.312,0.678,0.615,1.115,1.116,1.653,1.685,2.253,2.314,2.363,2.496,2.559,2.616,2.665,2.777,2.805,2.95,2.803,2.932,2.793,2.866,2.802,2.834,2.78,2.785,2.388,2.443,2.068,2.098,1.708,1.68,1.207,1.176,0.697,0.616,0.106,0.0]]},"2008_gfc":{"book":[[22.237,22.583,21.984,22.446,21.829,22.358,21.857,22.401,11.866,12.254,11.792,12.122,6.616,6.674,6.622,6.684,6.638,6.702,6.671,6.746,5.721,5.716,5.727,5.711,5.722,5.716,5.734,5.722,1.189,1.034,1.139,0.965,1.082,0.91,1.036,0.843,0.985,0.787,0.982,0.788,0.0],[22.237,24.006,23.758,24.288,23.575,23.901,23.146,23.386,12.611,12.995,12.762,13.441,8.389,8.547,8.593,8.714,8.765,8.947,9.046,9.249,8.352,8.425,8.456,8.531,8.584,8.621,8.662,8.699,3.77,3.443,3.452,3.092,3.114,2.727,2.686,2.258,2.175,1.709,1.621,1.118,0.0],[22.237,24.577,24.284,24.824,24.047,24.329,23.394,23.506,12.668,13.043,12.861,13.708,8.806,9.003,9.092,9.315,9.404,9.578,9.696,9.969,9.086,9.152,9.279,9.323,9.4,9.55,9.584,9.754,4.813,4.374,4.369,3.968,3.937,3.495,3.355,2.787,2.677,2.09,1.887,1.253,0.0]],"swap":[[0.475,0.603,0.234,0.417,0.133,0.378,0.197,0.429,0.297,0.507,0.406,0.59,0.505,0.517,0.562,0.569,0.612,0.615,0.659,0.673,0.721,0.683,0.726,0.683,0.723,0.68,0.717,0.665,0.696,0.565,0.616,0.475,0.526,0.385,0.428,0.275,0.302,0.146,0.163,0.018,0.0],[0.475,0.752,0.305,0.465,0.21,0.595,0.533,1.026,1.013,1.552,1.569,2.136,2.231,2.285,2.411,2.43,2.586,2.663,2.839,2.906,3.01,2.958,3.054,2.978,3.047,2.942,3.015,2.895,2.959,2.616,2.645,2.249,2.264,1.856,1.8,1.348,1.263,0.767,0.667,0.134,0.0],[0.475,0.783,0.305,0.465,0.21,0.597,0.564,1.142,1.239,1.89,2.06,2.785,3.027,3.127,3.31,3.431,3.509,3.612,3.768,3.844,4.047,3.904,4.077,3.946,4.042,4.018,4.058,4.053,4.053,3.59,3.59,3.155,3.114,2.652,2.517,1.924,1.778,1.168,0.94,0.275,0.0]]},"2020_covid_rate_shock":{"book":[[22.767,23.022,22.328,22.697,21.989,22.43,21.835,22.291,11.674,11.998,11.472,11.746,6.185,6.244,6.196,6.266,6.224,6.299,6.28,6.369,5.373,5.39,5.424,5.427,5.462,5.478,5.522,5.528,1.351,1.202,1.286,1.113,1.205,1.034,1.127,0.93,1.03,0.822,0.981,0.786,0.0],[22.767,24.603,24.259,24.69,23.833,23.993,23.097,23.24,12.462,12.872,12.682,13.461,8.557,8.746,8.831,8.98,9.089,9.316,9.476,9.719,8.894,9.021,9.077,9.183,9.287,9.374,9.441,9.534,4.663,4.299,4.256,3.856,3.84,3.392,3.276,2.775,2.597,2.039,1.849,1.237,0.0],[22.767,25.242,24.932,25.289,24.35,24.437,23.342,23.387,12.561,12.963,12.811,13.762,9.047,9.284,9.435,9.693,9.839,10.074,10.236,10.589,9.771,9.901,10.065,10.158,10.282,10.515,10.605,10.851,5.984,5.495,5.461,4.993,4.904,4.394,4.149,3.475,3.262,2.549,2.209,1.422,0.0]],"swap":[[0.435,0.517,0.107,0.251,0.043,0.241,0.136,0.338,0.266,0.465,0.415,0.603,0.565,0.594,0.646,0.666,0.719,0.733,0.787,0.815,0.873,0.848,0.898,0.865,0.911,0.878,0.921,0.874,0.909,0.772,0.813,0.661,0.702,0.547,0.576,0.403,0.41,0.227,0.222,0.04,0.0],[0.435,0.614,0.162,0.352,0.122,0.53,0.5,1.046,1.098,1.714,1.818,2.488,2.711,2.803,2.962,3.01,3.208,3.329,3.553,3.663,3.797,3.774,3.891,3.838,3.924,3.835,3.925,3.818,3.898,3.526,3.509,3.065,3.026,2.561,2.423,1.895,1.712,1.12,0.91,0.262,0.0],[0.435,0.615,0.162,0.352,0.124,0.532,0.521,1.15,1.338,2.096,2.395,3.269,3.687,3.831,4.058,4.228,4.333,4.486,4.687,4.812,5.074,4.942,5.156,5.041,5.165,5.184,5.241,5.288,5.299,4.779,4.729,4.24,4.133,3.603,3.368,2.658,2.4,1.659,1.28,0.455,0.0]]}},"summary":{"base":{"epe_book":8247681.543137952,"peak99_book":23505814.77771192,"peak99_book_t":0.75,"epe_swap":436608.62473476335,"peak99_swap":2949839.026245621,"peak99_swap_t":5.0,"cva_blend":930959.5848459477,"cva_pc":1482814.4212500516},"2008_gfc":{"epe_book":8209552.330573653,"peak99_book":24823624.80769483,"peak99_book_t":0.75,"epe_swap":477359.66655955155,"peak99_swap":4076809.924218326,"peak99_swap_t":5.5,"cva_blend":944992.4125308534,"cva_pc":1573386.05725348},"2020_covid_rate_shock":{"epe_book":8116668.483051329,"peak99_book":25289352.49063377,"peak99_book_t":0.75,"epe_swap":553437.8996328702,"peak99_swap":5298648.2819194775,"peak99_swap_t":7.0,"cva_blend":951932.054017633,"cva_pc":1654782.8301291373}},"cva_breakdown":[["BOND_001",227.0,602231],["BOND_002",147.0,127989],["BOND_003",204.0,122634],["BOND_004",195.0,171642],["BOND_005",268.0,330454],["BOND_006",206.0,81615],["SWAP_001",68.0,2936],["SWAP_002",47.0,20633],["SWAP_003",26.0,1917],["SWAP_004",78.0,2318],["SWAP_005",46.0,17290],["SWAP_006",79.0,1156]],"t":[0.0,0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.25,2.5,2.75,3.0,3.25,3.5,3.75,4.0,4.25,4.5,4.75,5.0,5.25,5.5,5.75,6.0,6.25,6.5,6.75,7.0,7.25,7.5,7.75,8.0,8.25,8.5,8.75,9.0,9.25,9.5,9.75,10.0],"sens":[["BOND_001","bond",4966820.7,2872.38,37.62],["BOND_002","bond",4859643.5,944.63,3.84],["BOND_003","bond",774906.93,656.83,79.89],["BOND_004","bond",5001197.76,958.7,3.77],["BOND_005","bond",4669101.78,1331.46,8.39],["BOND_006","bond",941391.31,424.39,21.67],["SWAP_001","swap",-638467.98,-6410.06,663.72],["SWAP_002","swap",1264751.06,12815.74,669.95],["SWAP_003","swap",307941.01,5787.96,552.49],["SWAP_004","swap",97647.43,2884.28,869.03],["SWAP_005","swap",-492055.36,-16932.67,3202.68],["SWAP_006","swap",-73310.4,2279.0,-1509.4],["PORTFOLIO","-",21679567.74,7612.64,""]],"theta":{"t":[0.005,0.01,0.015,0.02,0.025,0.03,0.035,0.04,0.045,0.05,0.055,0.06,0.065,0.07,0.075,0.08,0.085,0.09,0.095,0.1,0.105,0.11,0.115,0.12,0.125,0.13,0.135,0.14,0.145,0.15,0.155,0.16,0.165,0.17,0.175,0.18,0.185,0.19,0.195,0.2,0.205,0.21,0.215,0.22,0.225,0.23,0.235,0.24,0.245,0.25,0.255,0.26,0.265,0.27,0.275,0.28,0.285,0.29,0.295,0.3,0.305,0.31,0.315,0.32,0.325,0.33,0.335,0.34,0.345,0.35,0.355,0.36,0.365,0.37,0.375,0.38,0.385,0.39,0.395,0.4,0.405,0.41,0.415,0.42,0.425,0.43,0.435,0.44,0.445,0.45,0.455,0.46,0.465,0.47,0.475,0.48,0.485,0.49,0.495,0.5,0.505,0.51,0.515,0.52,0.525,0.53,0.535,0.54,0.545,0.55,0.555,0.56,0.565,0.57,0.575,0.58,0.585,0.59,0.595,0.6,0.605,0.61,0.615,0.62,0.625,0.63,0.635,0.64,0.645,0.65,0.655,0.66,0.665,0.67,0.675,0.68,0.685,0.69,0.695,0.7,0.705,0.71,0.715,0.72,0.725,0.73,0.735,0.74,0.745,0.75,0.755,0.76,0.765,0.77,0.775,0.78,0.785,0.79,0.795,0.8,0.805,0.81,0.815,0.82,0.825,0.83,0.835,0.84,0.845,0.85,0.855,0.86,0.865,0.87,0.875,0.88,0.885,0.89,0.895,0.9,0.905,0.91,0.915,0.92,0.925,0.93,0.935,0.94,0.945,0.95,0.955,0.96,0.965,0.97,0.975,0.98,0.985,0.99,0.995,1.0,1.005,1.01,1.015,1.02,1.025,1.03,1.035,1.04,1.045,1.05,1.055,1.06,1.065,1.07,1.075,1.08,1.085,1.09,1.095,1.1,1.105,1.11,1.115,1.12,1.125,1.13,1.135,1.14,1.145,1.15,1.155,1.16,1.165,1.17,1.175,1.18,1.185,1.19,1.195,1.2,1.205,1.21,1.215,1.22,1.225,1.23,1.235,1.24,1.245,1.25,1.255,1.26,1.265,1.27,1.275,1.28,1.285,1.29,1.295,1.3,1.305,1.31,1.315,1.32,1.325,1.33,1.335,1.34,1.345,1.35,1.355,1.36,1.365,1.37,1.375,1.38,1.385,1.39,1.395,1.4,1.405,1.41,1.415,1.42,1.425,1.43,1.435,1.44,1.445,1.45,1.455,1.46,1.465,1.47,1.475,1.48,1.485,1.49,1.495,1.5,1.505,1.51,1.515,1.52,1.525,1.53,1.535,1.54,1.545,1.55,1.555,1.56,1.565,1.57,1.575,1.58,1.585,1.59,1.595,1.6,1.605,1.61,1.615,1.62,1.625,1.63,1.635,1.64,1.645,1.65,1.655,1.66,1.665,1.67,1.675,1.68,1.685,1.69,1.695,1.7,1.705,1.71,1.715,1.72,1.725,1.73,1.735,1.74,1.745,1.75,1.755,1.76,1.765,1.77,1.775,1.78,1.785,1.79,1.795,1.8,1.805,1.81,1.815,1.82,1.825,1.83,1.835,1.84,1.845,1.85,1.855,1.86,1.865,1.87,1.875,1.88,1.885,1.89,1.895,1.9,1.905,1.91,1.915,1.92,1.925,1.93,1.935,1.94,1.945,1.95,1.955,1.96,1.965,1.97,1.975,1.98,1.985,1.99,1.995,2.0,2.005,2.01,2.015,2.02,2.025,2.03,2.035,2.04,2.045,2.05,2.055,2.06,2.065,2.07,2.075,2.08,2.085,2.09,2.095,2.1,2.105,2.11,2.115,2.12,2.125,2.13,2.135,2.14,2.145,2.15,2.155,2.16,2.165,2.17,2.175,2.18,2.185,2.19,2.195,2.2,2.205,2.21,2.215,2.22,2.225,2.23,2.235,2.24,2.245,2.25,2.255,2.26,2.265,2.27,2.275,2.28,2.285,2.29,2.295,2.3,2.305,2.31,2.315,2.32,2.325,2.33,2.335,2.34,2.345,2.35,2.355,2.36,2.365,2.37,2.375,2.38,2.385,2.39,2.395,2.4,2.405,2.41,2.415,2.42,2.425,2.43,2.435,2.44,2.445,2.45,2.455,2.46,2.465,2.47,2.475,2.48,2.485,2.49,2.495,2.5,2.505,2.51,2.515,2.52,2.525,2.53,2.535,2.54,2.545,2.55,2.555,2.56,2.565,2.57,2.575,2.58,2.585,2.59,2.595,2.6,2.605,2.61,2.615,2.62,2.625,2.63,2.635,2.64,2.645,2.65,2.655,2.66,2.665,2.67,2.675,2.68,2.685,2.69,2.695,2.7,2.705,2.71,2.715,2.72,2.725,2.73,2.735,2.74,2.745,2.75,2.755,2.76,2.765,2.77,2.775,2.78,2.785,2.79,2.795,2.8,2.805,2.81,2.815,2.82,2.825,2.83,2.835,2.84,2.845,2.85,2.855,2.86,2.865,2.87,2.875,2.88,2.885,2.89,2.895,2.9,2.905,2.91,2.915,2.92,2.925,2.93,2.935,2.94,2.945,2.95,2.955,2.96,2.965,2.97,2.975,2.98,2.985,2.99,2.995,3.0],"before":[0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,0.0017,1.7043,0.0155,0.0155,0.0156,0.0157,0.0157,0.0158,0.0159,0.016,0.0161,0.0162,0.0163,0.0164,0.0165,0.0166,0.0167,0.0169,0.017,0.0171,0.0172,0.0174,0.0175,0.0177,0.0178,0.018,0.0181,0.0183,0.0185,0.0187,0.0188,0.019,0.0192,0.0194,0.0196,0.0198,0.02,0.0202,0.0204,0.0206,0.0208,0.0211,0.0213,0.0215,0.0218,0.022,0.0223,0.0225,0.0228,0.023,0.0233,0.0235,0.0236,0.0236,0.0237,0.0237,0.0237,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0237,0.0237,0.0237,0.0236,0.0236,0.0235,0.0235,0.0234,0.0233,0.0233,0.0232,0.0231,0.023,0.0229,0.0228,0.0228,0.0227,0.0225,0.0224,0.0223,0.0222,0.0221,0.0219,0.0218,0.0217,0.0215,0.0214,0.0212,0.0211,0.0209,0.0207,0.0206,0.0204,0.0202,0.02,0.0199,0.0197,0.0195,0.0193,0.019,0.0188,0.0186,0.0184,0.0182,0.0179,0.0177,0.0175,0.0172,0.017,0.0167,0.0165,0.0162,0.0159,0.0157,0.0154,0.0151,0.0148,0.0145,0.0142,0.0139,0.0136,0.0133,0.013,0.0127,0.0124,0.012,0.0117,0.0114,0.011,0.0107,0.0103,0.01,0.0096,0.0093,0.0089,0.0085,0.0081,0.0078,0.0074,0.007,0.0066,0.0062,0.0058,0.0056,0.0055,0.0054,0.0052,0.0051,0.0049,0.0048,0.0047,0.0045,0.0044,0.0043,0.0042,0.004,0.0039,0.0038,0.0036,0.0035,0.0034,0.0033,0.0032,0.003,0.0029,0.0028,0.0027,0.0025,0.0024,0.0023,0.0022,0.0021,0.002,0.0019,0.0017,0.0016,0.0015,0.0014,0.0013,0.0012,0.0011,0.001,0.0009,0.0008,0.0006,0.0005,0.0004,0.0003,0.0002,0.0001,0.0,-0.0001,-0.0002,-0.0003,-0.0004,-0.0005,-0.0005,-0.0006,-0.0007,-0.0008,-0.0009,-0.001,-0.0011,-0.0012,-0.0013,-0.0014,-0.0015,-0.0015,-0.0016,-0.0017,-0.0018,-0.0019,-0.002,-0.002,-0.0021,-0.0022,-0.0023,-0.0024,-0.0024,-0.0025,-0.0026,-0.0027,-0.0027,-0.0028,-0.0029,-0.0029,-0.003,-0.0031,-0.0032,-0.0032,-0.0033,-0.0034,-0.0034,-0.0035,-0.0035,-0.0036,-0.0037,-0.0037,-0.0038,-0.0039,-0.0039,-0.004,-0.004,-0.0041,-0.0041,-0.0042,-0.0042,-0.0043,-0.0044,-0.0044,-0.0045,-0.0045,-0.0046,-0.0046,-0.0046,-0.0047,-0.0047,-0.0048,-0.0048,-0.0049,-0.0049,-0.005,-0.005,-0.005,-0.0051,-0.0051,-0.0051,-0.0052,-0.0052,-0.0052,-0.0053,-0.0053,-0.0053,-0.0054,-0.0054,-0.0054,-0.0055,-0.0055,-0.0055,-0.0055,-0.0056,-0.0056,-0.0056,-0.0056,-0.0057,-0.0057,-0.0057,-0.0057,-0.0057,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0057,-0.0057,-0.0057,-0.0057,-0.0057,-0.0056,-0.0056,-0.0056,-0.0056,-0.0056,-0.0055,-0.0055,-0.0055,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0053,-0.0053,-0.0053,-0.0053,-0.0053,-0.0053,-0.0053,-0.0052,-0.0052,-0.0052,-0.0052,-0.0052,-0.0051,-0.0051,-0.0051,-0.0051,-0.0051,-0.005,-0.005,-0.005,-0.005,-0.0049,-0.0049,-0.0049,-0.0048,-0.0048,-0.0048,-0.0048,-0.0047,-0.0047,-0.0047,-0.0046,-0.0046,-0.0046,-0.0045,-0.0045,-0.0045,-0.0044,-0.0044,-0.0043,-0.0043,-0.0043,-0.0042,-0.0042,-0.0041,-0.0041,-0.0041,-0.004,-0.004,-0.0039,-0.0039,-0.0038,-0.0038,-0.0037,-0.0037,-0.0037,-0.0036,-0.0036,-0.0035,-0.0035,-0.0034,-0.0034,-0.0033,-0.0032,-0.0032,-0.0031,-0.0031,-0.003,-0.003,-0.0029,-0.0029,-0.0028,-0.0027,-0.0027,-0.0026,-0.0026,-0.0025,-0.0024,-0.0024,-0.0023,-0.0022,-0.0022,-0.0021,-0.002,-0.002,-0.0019,-0.0018,-0.0018,-0.0017,-0.0016,-0.0016,-0.0015,-0.0014,-0.0013,-0.0013,-0.0012,-0.0011,-0.0011,-0.001,-0.0009,-0.0008,-0.0007,-0.0007,-0.0006,-0.0005,-0.0004,-0.0003,-0.0003,-0.0002,-0.0001,-0.0,0.0001,0.0002,0.0002,0.0003,0.0004,0.0005,0.0006,0.0007,0.0008,0.0009,0.001,0.001,0.0011,0.0012,0.0013,0.0014,0.0015,0.0016,0.0017,0.0018,0.0019,0.002,0.0021,0.0022,0.0023,0.0024,0.0025,0.0026,0.0027,0.0028,0.0029,0.003,0.0031,0.0032,0.0033,0.0034,0.0036,0.0037,0.0038,0.0039,0.004,0.0041,0.0042,0.0043,0.0044,0.0046,0.0047,0.0048,0.0049,0.005,0.0051,0.0053,0.0054,0.0055,0.0056,0.0057,0.0059,0.006,0.0061,0.0062,0.0063,0.0065,0.0066,0.0067,0.0069,0.007,0.0071,0.0072,0.0074,0.0075,0.0076,0.0078,0.0079,0.008,0.0082,0.0083,0.0084,0.0086,0.0087],"after":[0.0176,0.0175,0.0173,0.0172,0.0171,0.0169,0.0168,0.0167,0.0166,0.0165,0.0164,0.0163,0.0162,0.0161,0.016,0.0159,0.0158,0.0157,0.0156,0.0156,0.0155,0.0154,0.0154,0.0153,0.0153,0.0152,0.0152,0.0152,0.0151,0.0151,0.0151,0.0151,0.015,0.015,0.015,0.015,0.015,0.015,0.015,0.015,0.0151,0.0151,0.0151,0.0151,0.0152,0.0152,0.0152,0.0153,0.0153,0.0154,0.0155,0.0155,0.0156,0.0157,0.0157,0.0158,0.0159,0.016,0.0161,0.0162,0.0163,0.0164,0.0165,0.0166,0.0167,0.0169,0.017,0.0171,0.0172,0.0174,0.0175,0.0177,0.0178,0.018,0.0181,0.0183,0.0185,0.0187,0.0188,0.019,0.0192,0.0194,0.0196,0.0198,0.02,0.0202,0.0204,0.0206,0.0208,0.0211,0.0213,0.0215,0.0218,0.022,0.0223,0.0225,0.0228,0.023,0.0233,0.0235,0.0236,0.0236,0.0237,0.0237,0.0237,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0238,0.0237,0.0237,0.0237,0.0236,0.0236,0.0235,0.0235,0.0234,0.0233,0.0233,0.0232,0.0231,0.023,0.0229,0.0228,0.0228,0.0227,0.0225,0.0224,0.0223,0.0222,0.0221,0.0219,0.0218,0.0217,0.0215,0.0214,0.0212,0.0211,0.0209,0.0207,0.0206,0.0204,0.0202,0.02,0.0199,0.0197,0.0195,0.0193,0.019,0.0188,0.0186,0.0184,0.0182,0.0179,0.0177,0.0175,0.0172,0.017,0.0167,0.0165,0.0162,0.0159,0.0157,0.0154,0.0151,0.0148,0.0145,0.0142,0.0139,0.0136,0.0133,0.013,0.0127,0.0124,0.012,0.0117,0.0114,0.011,0.0107,0.0103,0.01,0.0096,0.0093,0.0089,0.0085,0.0081,0.0078,0.0074,0.007,0.0066,0.0062,0.0058,0.0056,0.0055,0.0054,0.0052,0.0051,0.0049,0.0048,0.0047,0.0045,0.0044,0.0043,0.0042,0.004,0.0039,0.0038,0.0036,0.0035,0.0034,0.0033,0.0032,0.003,0.0029,0.0028,0.0027,0.0025,0.0024,0.0023,0.0022,0.0021,0.002,0.0019,0.0017,0.0016,0.0015,0.0014,0.0013,0.0012,0.0011,0.001,0.0009,0.0008,0.0006,0.0005,0.0004,0.0003,0.0002,0.0001,0.0,-0.0001,-0.0002,-0.0003,-0.0004,-0.0005,-0.0005,-0.0006,-0.0007,-0.0008,-0.0009,-0.001,-0.0011,-0.0012,-0.0013,-0.0014,-0.0015,-0.0015,-0.0016,-0.0017,-0.0018,-0.0019,-0.002,-0.002,-0.0021,-0.0022,-0.0023,-0.0024,-0.0024,-0.0025,-0.0026,-0.0027,-0.0027,-0.0028,-0.0029,-0.0029,-0.003,-0.0031,-0.0032,-0.0032,-0.0033,-0.0034,-0.0034,-0.0035,-0.0035,-0.0036,-0.0037,-0.0037,-0.0038,-0.0039,-0.0039,-0.004,-0.004,-0.0041,-0.0041,-0.0042,-0.0042,-0.0043,-0.0044,-0.0044,-0.0045,-0.0045,-0.0046,-0.0046,-0.0046,-0.0047,-0.0047,-0.0048,-0.0048,-0.0049,-0.0049,-0.005,-0.005,-0.005,-0.0051,-0.0051,-0.0051,-0.0052,-0.0052,-0.0052,-0.0053,-0.0053,-0.0053,-0.0054,-0.0054,-0.0054,-0.0055,-0.0055,-0.0055,-0.0055,-0.0056,-0.0056,-0.0056,-0.0056,-0.0057,-0.0057,-0.0057,-0.0057,-0.0057,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0059,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0058,-0.0057,-0.0057,-0.0057,-0.0057,-0.0057,-0.0056,-0.0056,-0.0056,-0.0056,-0.0056,-0.0055,-0.0055,-0.0055,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0054,-0.0053,-0.0053,-0.0053,-0.0053,-0.0053,-0.0053,-0.0053,-0.0052,-0.0052,-0.0052,-0.0052,-0.0052,-0.0051,-0.0051,-0.0051,-0.0051,-0.0051,-0.005,-0.005,-0.005,-0.005,-0.0049,-0.0049,-0.0049,-0.0048,-0.0048,-0.0048,-0.0048,-0.0047,-0.0047,-0.0047,-0.0046,-0.0046,-0.0046,-0.0045,-0.0045,-0.0045,-0.0044,-0.0044,-0.0043,-0.0043,-0.0043,-0.0042,-0.0042,-0.0041,-0.0041,-0.0041,-0.004,-0.004,-0.0039,-0.0039,-0.0038,-0.0038,-0.0037,-0.0037,-0.0037,-0.0036,-0.0036,-0.0035,-0.0035,-0.0034,-0.0034,-0.0033,-0.0032,-0.0032,-0.0031,-0.0031,-0.003,-0.003,-0.0029,-0.0029,-0.0028,-0.0027,-0.0027,-0.0026,-0.0026,-0.0025,-0.0024,-0.0024,-0.0023,-0.0022,-0.0022,-0.0021,-0.002,-0.002,-0.0019,-0.0018,-0.0018,-0.0017,-0.0016,-0.0016,-0.0015,-0.0014,-0.0013,-0.0013,-0.0012,-0.0011,-0.0011,-0.001,-0.0009,-0.0008,-0.0007,-0.0007,-0.0006,-0.0005,-0.0004,-0.0003,-0.0003,-0.0002,-0.0001,-0.0,0.0001,0.0002,0.0002,0.0003,0.0004,0.0005,0.0006,0.0007,0.0008,0.0009,0.001,0.001,0.0011,0.0012,0.0013,0.0014,0.0015,0.0016,0.0017,0.0018,0.0019,0.002,0.0021,0.0022,0.0023,0.0024,0.0025,0.0026,0.0027,0.0028,0.0029,0.003,0.0031,0.0032,0.0033,0.0034,0.0036,0.0037,0.0038,0.0039,0.004,0.0041,0.0042,0.0043,0.0044,0.0046,0.0047,0.0048,0.0049,0.005,0.0051,0.0053,0.0054,0.0055,0.0056,0.0057,0.0059,0.006,0.0061,0.0062,0.0063,0.0065,0.0066,0.0067,0.0069,0.007,0.0071,0.0072,0.0074,0.0075,0.0076,0.0078,0.0079,0.008,0.0082,0.0083,0.0084,0.0086,0.0087]},"rmean":{"before":[0.0284,0.0283,0.454,0.4531,0.4515,0.4463,0.4396,0.432,0.4241,0.4165,0.4092,0.4026,0.3972,0.3934,0.3897,0.3863,0.3827,0.3791,0.3753,0.3713,0.3668,0.3618,0.3569,0.3518,0.3469,0.342,0.3374,0.3325,0.3278,0.3233,0.3189,0.3144,0.3103,0.3063,0.3023,0.2984,0.2945,0.291,0.2876,0.2844,0.2814],"after":[0.0266,0.0306,0.034,0.0393,0.044,0.0449,0.0442,0.0425,0.0405,0.0386,0.037,0.036,0.0361,0.0377,0.0394,0.0412,0.0428,0.0443,0.0455,0.0465,0.0468,0.0466,0.0464,0.046,0.0457,0.0454,0.0451,0.0447,0.0443,0.044,0.0438,0.0434,0.0434,0.0434,0.0434,0.0433,0.0433,0.0435,0.0438,0.0443,0.0449]}};
+const T=D.t, SC={base:"base","2008_gfc":"2008-style","2020_covid_rate_shock":"2020-style"};
+const fm=v=>"$"+(v>=1?v.toFixed(2)+"M":(v*1000).toFixed(0)+"K");
+const st={set:"swap",sc:"base",b:"theta"};
+function chips(id,key,draw){ document.querySelectorAll("#"+id+" .chip").forEach(b=>b.addEventListener("click",()=>{
+  st[key]=b.dataset[Object.keys(b.dataset)[0]]; document.querySelectorAll("#"+id+" .chip").forEach(x=>x.setAttribute("aria-pressed",x===b)); draw(); })); }
+
+function drawExp(){
+  const p=D.profiles[st.sc][st.set], base=D.profiles.base[st.set], s=D.summary[st.sc], sb=D.summary.base;
+  const k=st.set==="swap"?"swap":"book", peak=s["peak99_"+k], pb=sb["peak99_"+k];
+  const dlt=st.sc==="base"?"":` (${peak>pb?"+":""}${((peak/pb-1)*100).toFixed(0)}% vs base)`;
+  document.getElementById("expRead").innerHTML=`<div class="hot"><b>${fm(peak/1e6)}</b><span>peak PFE₉₉ at ${s["peak99_"+k+"_t"]}y${dlt}</span></div><div><b>${fm(s["epe_"+k]/1e6)}</b><span>EPE (time-averaged EE)</span></div><div><b>${SC[st.sc]}</b><span>scenario</span></div>`;
+  const host=document.getElementById("pExp"), f=K.frame(host,300,{l:56,r:16,t:18,b:32});
+  const ymax=Math.max(...p[2],...base[0])*1.08, x=K.lin(0,10,f.m.l,f.w-f.m.r), y=K.lin(0,ymax,f.h-f.m.b,f.m.t);
+  K.axisY(f,y,K.nice(0,ymax,4),v=>"$"+v+"M"); K.axisX(f,x,[0,2,4,6,8,10],v=>v+"y","years");
+  const band=K.path(T.map((t,i)=>[x(t),y(p[2][i])]))+K.path([...T].reverse().map((t,j)=>{const i=T.length-1-j;return [x(t),y(p[1][i])];})).replace(/^M/,"L")+"Z";
+  K.el("path",{d:band,fill:"var(--red-wash)",stroke:"none"},f.svg);
+  K.el("path",{d:K.path(T.map((t,i)=>[x(t),y(p[2][i])])),fill:"none",stroke:"var(--red)","stroke-width":1,"stroke-dasharray":"3 3"},f.svg);
+  if(st.sc!=="base") K.el("path",{d:K.path(T.map((t,i)=>[x(t),y(base[0][i])])),fill:"none",stroke:"var(--axis)","stroke-width":1.2,"stroke-dasharray":"4 3"},f.svg);
+  K.el("path",{d:K.path(T.map((t,i)=>[x(t),y(p[1][i])])),fill:"none",stroke:"var(--red)","stroke-width":1.8},f.svg);
+  K.el("path",{d:K.path(T.map((t,i)=>[x(t),y(p[0][i])])),fill:"none",stroke:"var(--ink)","stroke-width":2.2},f.svg);
+  K.hover(f,px=>{ const i=Math.max(0,Math.min(T.length-1,Math.round((px-f.m.l)/f.iw*40)));
+    return {x:x(T[i]),html:`t = ${T[i]}y<br>EE ${fm(p[0][i])}<br>PFE₉₅ ${fm(p[1][i])}<br>PFE₉₉ ${fm(p[2][i])}`}; });
+}
+
+function drawStress(){
+  const rows=Object.keys(SC).map(sc=>{ const s=D.summary[sc], b=D.summary.base, d=(a,c)=>sc==="base"?"—":(a/c>1?"+":"")+((a/c-1)*100).toFixed(0)+"%";
+    return `<tr${sc==="2020_covid_rate_shock"?' class="hl"':""}><td>${SC[sc]}</td><td>${fm(s.peak99_swap/1e6)}</td><td>${d(s.peak99_swap,b.peak99_swap)}</td><td>${s.peak99_swap_t}y</td><td>${fm(s.peak99_book/1e6)}</td><td>${d(s.peak99_book,b.peak99_book)}</td><td>${fm(s.cva_pc/1e6)}</td><td>${d(s.cva_pc,b.cva_pc)}</td></tr>`; }).join("");
+  document.getElementById("stressTbl").innerHTML=`<thead><tr><th>Scenario</th><th>Swap-set peak PFE₉₉</th><th>Δ</th><th>at</th><th>Book peak PFE₉₉</th><th>Δ</th><th>CVA (per name)</th><th>Δ</th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+function drawCva(){
+  const B=D.cva_breakdown, host=document.getElementById("pCva"), rh=22, f=K.frame(host,B.length*rh+40,{l:84,r:120,t:10,b:28});
+  const mx=Math.max(...B.map(b=>b[2]))*1.02, x=K.lin(0,mx,f.m.l,f.w-f.m.r);
+  K.axisX(f,x,K.nice(0,mx,4),v=>"$"+(v/1000).toFixed(0)+"K");
+  B.forEach((b,i)=>{ const yy=f.m.t+i*rh, bond=b[0].startsWith("BOND");
+    K.el("text",{x:f.m.l-8,y:yy+rh/2+3.5,"text-anchor":"end"},f.svg,b[0]);
+    K.el("rect",{x:f.m.l,y:yy+4,width:Math.max(1,x(b[2])-f.m.l),height:rh-8,fill:bond?"var(--red)":"var(--ink)"},f.svg);
+    K.el("text",{x:x(b[2])+6,y:yy+rh/2+3.5},f.svg,"$"+(b[2]/1000).toFixed(b[2]<10000?1:0)+"K · "+b[1]+"bp"); });
+}
+
+function drawRisk(){
+  const cva=Object.fromEntries(D.cva_breakdown.map(b=>[b[0],b[2]]));
+  const rows=D.sens.map(r=>`<tr${r[0]==="PORTFOLIO"?' class="hl"':""}><td>${r[0]}</td><td>${r[1]}</td><td>${(r[2]/1e6).toFixed(2)}M</td><td>${Math.round(r[3]).toLocaleString()}</td><td>${r[0]==="PORTFOLIO"?Math.round(D.summary.base.cva_pc).toLocaleString():cva[r[0]].toLocaleString()}</td></tr>`).join("");
+  document.getElementById("riskTbl").innerHTML=`<thead><tr><th>Trade</th><th>Type</th><th>MtM</th><th>DV01 ($/bp)</th><th>CVA ($)</th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+function drawBug(){
+  const host=document.getElementById("pBug"), f=K.frame(host,260,{l:56,r:16,t:18,b:32}), cap=document.getElementById("bugCap");
+  let xs,a,b,xmax,ylab,fmt,ymax,ymin;
+  if(st.b==="theta"){ xs=D.theta.t; a=D.theta.before; b=D.theta.after; xmax=3; ymin=-0.05; ymax=1.8; fmt=v=>(v*100).toFixed(0)+"%";
+    cap.textContent="θ(t) over the first 3 years. Before the fix it is a 170% spike at 0.25y (one grid step of it adds ~43 points to the short rate); after, it is flat near zero at this scale."; }
+  else { xs=T; a=D.rmean.before; b=D.rmean.after; xmax=10; ymin=0; ymax=0.5; fmt=v=>(v*100).toFixed(0)+"%";
+    cap.textContent="Mean simulated short rate across 5,000 paths. Before: 45% after one quarter, decaying slowly under weak mean reversion (a = 0.06). After: tracks the curve at 3–5%."; }
+  const x=K.lin(0,xmax,f.m.l,f.w-f.m.r), y=K.lin(ymin,ymax,f.h-f.m.b,f.m.t);
+  K.axisY(f,y,K.nice(ymin,ymax,4).filter(v=>v>=ymin),fmt); K.axisX(f,x,K.nice(0,xmax,5),v=>v+"y","years");
+  K.el("path",{d:K.path(xs.map((t,i)=>[x(t),y(a[i])])),fill:"none",stroke:"var(--red)","stroke-width":2},f.svg);
+  K.el("path",{d:K.path(xs.map((t,i)=>[x(t),y(b[i])])),fill:"none",stroke:"var(--ink)","stroke-width":2},f.svg);
+  K.hover(f,px=>{ const tv=(px-f.m.l)/f.iw*xmax; let i=0,bd=1e9; xs.forEach((t,j)=>{ if(Math.abs(t-tv)<bd){bd=Math.abs(t-tv);i=j;} });
+    return {x:x(xs[i]),html:`t = ${xs[i]}y<br>before ${(a[i]*100).toFixed(2)}%<br>after ${(b[i]*100).toFixed(2)}%`}; });
+}
+
+chips("setChips","set",drawExp); chips("scChips","sc",drawExp); chips("bugChips","b",drawBug);
+function all(){ drawExp(); drawCva(); drawBug(); }
+drawStress(); drawRisk(); all();
+let rt; addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(all,150); });
 </script>
 </body></html>
