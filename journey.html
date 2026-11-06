@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Rat Run</title>
+<meta name="description" content="Aditri's route so far — Delhi to Jersey City, one stop at a time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,900&family=Archivo:wght@400;500;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a city walk. One street winds down the page on Manhattan's tilted grid; each stop is a corner with a sign, and the rat walks to it as you scroll. */
+html,body{margin:0}
+:root{
+  color-scheme:light;
+  --paper:#e5e2de; --paper-2:#dcd8d3; --ink:#161514; --ink-soft:#4a4744; --rule:#c4bfb9;
+  --red:#dc3b2f; --red-deep:#b52a20;
+  --display:"Fraunces", "Times New Roman", Georgia, serif;
+  --sans:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;overflow-x:hidden}
+a{color:var(--red);text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:2px}
+.rough{filter:url(#rough)}
+.star{display:inline-block;fill:var(--red)}
+html,body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23dc3b2f' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23dc3b2f'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23dc3b2f'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%238f1d16' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,auto}
+a,button,.btn,.chip,input[type=range],label{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg transform='rotate%28-45 16 16%29' stroke='%23e5e2de' stroke-width='1.1' paint-order='stroke' stroke-linejoin='round'%3E%3Cpath d='M16 24.5 C16 28 19.5 29 21 27 C21.8 25.4 23.8 25.8 23.6 28.2' fill='none' stroke='%23a8231a' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cx='16' cy='17.5' rx='6' ry='7.8' fill='%23a8231a'/%3E%3Cpath d='M16 1.6 C17.6 4 19.6 7 19.4 10.5 C19.2 12.8 12.8 12.8 12.6 10.5 C12.4 7 14.4 4 16 1.6 Z' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='19.4' cy='9.2' r='2.4' fill='%23a8231a'/%3E%3Ccircle cx='12.6' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='19.4' cy='9.2' r='1.1' fill='%235e120d' stroke='none'/%3E%3Ccircle cx='14.6' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='17.4' cy='6.6' r='.95' fill='%23161514' stroke='none'/%3E%3Ccircle cx='16' cy='1.9' r='.9' fill='%23161514' stroke='none'/%3E%3Cpath d='M14 3.4 L9.5 2.2 M14 3.9 L9.6 4.6 M18 3.4 L22.5 2.2 M18 3.9 L22.4 4.6' stroke='%23161514' stroke-width='.45' fill='none'/%3E%3C/g%3E%3C/svg%3E") 5 5,pointer}
+
+/* header */
+.head{max-width:1180px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-left,0px)) 0 max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:13px}
+.top a:hover{text-decoration:underline;text-underline-offset:3px}
+.eyebrow{margin-top:26px;font-weight:800;font-size:clamp(18px,2.4vw,24px);letter-spacing:-.04em;display:flex;align-items:center;gap:.4em}
+h1{margin:4px 0 0;font-family:var(--display);font-weight:900;color:var(--red);font-size:clamp(64px,13vw,170px);line-height:.85;letter-spacing:-.02em}
+h1 span{display:inline-block}
+h1 .a{transform:rotate(-4deg)} h1 .b{transform:rotate(3deg) translateY(.04em)} h1 .c{transform:rotate(-2deg)}
+.lede{margin:18px 0 0;font-size:clamp(17px,1.9vw,20px);line-height:1.5;max-width:52ch}
+.hint{margin:10px 0 0;font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+
+/* the city */
+.route{position:relative;max-width:1180px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px)) 80px max(16px,env(safe-area-inset-right,0px))}
+.route::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(29deg,transparent 0 88px,var(--rule) 88px 90px),
+    repeating-linear-gradient(119deg,transparent 0 210px,var(--rule) 210px 212px);
+  opacity:.55;
+  -webkit-mask:linear-gradient(transparent,#000 120px,#000 calc(100% - 160px),transparent);
+          mask:linear-gradient(transparent,#000 120px,#000 calc(100% - 160px),transparent)}
+#street{position:absolute;left:0;top:0;width:100%;height:100%;z-index:1;overflow:visible;pointer-events:none}
+#street .curb{fill:none;stroke:var(--ink);stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+#street .lane{fill:none;stroke:var(--paper);stroke-width:2;stroke-dasharray:14 12;stroke-linecap:butt;stroke-linejoin:round;opacity:.8}
+#street .walked{fill:none;stroke:var(--red);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+#street .pin circle{fill:var(--paper);stroke:var(--ink);stroke-width:4;transition:fill .25s,r .25s}
+#street .pin text{font-family:var(--mono);font-size:14px;font-weight:500;fill:var(--ink);text-anchor:middle;dominant-baseline:central;transition:fill .25s}
+#street .pin.on circle{fill:var(--red);stroke:var(--paper)}
+#street .pin.on text{fill:var(--paper)}
+#street .manhole circle{fill:var(--ink-soft);stroke:var(--ink);stroke-width:3}
+#street .manhole line{stroke:var(--paper-2);stroke-width:1.5;opacity:.5}
+
+.rat{position:absolute;left:0;top:0;width:100px;height:53px;margin:-26px 0 0 -50px;z-index:3;pointer-events:none;will-change:transform}
+.rat svg{width:100%;height:100%;overflow:visible}
+.rat .leg{transform-box:fill-box;transform-origin:50% 0}
+.rat.walking .leg.l1,.rat.walking .leg.l3{animation:step .22s ease-in-out infinite alternate}
+.rat.walking .leg.l2,.rat.walking .leg.l4{animation:step .22s ease-in-out infinite alternate-reverse}
+.rat.walking .tail{animation:wag .44s ease-in-out infinite alternate}
+.rat .tail{transform-box:fill-box;transform-origin:100% 50%}
+@keyframes step{from{transform:rotate(-35deg)}to{transform:rotate(35deg)}}
+@keyframes wag{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+
+.stop{position:relative;z-index:2;min-height:82vh;display:flex;align-items:center;justify-content:flex-end;padding:40px 0}
+.stop:nth-of-type(even){justify-content:flex-start}
+.card{width:min(480px,54%);background:var(--paper);border:2px solid var(--ink);box-shadow:7px 7px 0 var(--ink)}
+.js .card{opacity:0;transform:translateY(24px) rotate(var(--tilt,0deg));transition:opacity .45s,transform .45s cubic-bezier(.2,.8,.2,1)}
+.js .stop.here .card{opacity:1;transform:rotate(var(--tilt,0deg))}
+.stop:nth-of-type(odd) .card{--tilt:.6deg} .stop:nth-of-type(even) .card{--tilt:-.6deg}
+.sign{display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);padding:9px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.sign b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--red);color:var(--paper);display:grid;place-items:center;font-weight:500;letter-spacing:0}
+.sign .when{margin-left:auto;opacity:.7;white-space:nowrap}
+.body{padding:18px 20px 20px}
+.card h2{margin:0;font-family:var(--display);font-weight:900;font-size:clamp(28px,3.4vw,40px);line-height:.98;letter-spacing:-.02em;color:var(--ink)}
+.role{margin:6px 0 0;font-weight:800;letter-spacing:-.02em;color:var(--red)}
+.card p.txt{margin:12px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tag{font-family:var(--mono);font-size:11.5px;border:1px solid var(--ink);border-radius:999px;padding:1px 9px;color:var(--ink)}
+a.tag:hover{background:var(--ink);color:var(--paper)}
+a.tag.go{border-color:var(--red);color:var(--red)}
+a.tag.go:hover{background:var(--red);color:var(--paper)}
+
+.river{position:relative;z-index:0;height:260px;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(circle,var(--ink-soft) 1.1px,transparent 1.6px) 0 0/9px 9px,
+    var(--paper-2)}
+.river::before,.river::after{content:"";position:absolute;left:0;right:0;height:14px;background:radial-gradient(circle at 10px -4px,transparent 10px,var(--paper) 11px) 0 0/20px 14px repeat-x}
+.river::before{top:0} .river::after{bottom:0;transform:scaleY(-1)}
+.river span{position:relative;z-index:2;font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;background:var(--paper);border:1px solid var(--ink);padding:5px 12px}
+
+.end{position:relative;z-index:2;text-align:center;font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding-top:40px}
+
+@media (max-width:760px){
+  .stop,.stop:nth-of-type(even){justify-content:flex-end;min-height:auto;padding:56px 0}
+  .card{width:calc(100% - 58px)}
+  .stop .card{--tilt:0deg}
+  .rat{width:56px;height:30px;margin:-15px 0 0 -28px}
+  .river{height:180px}
+}
+@media (prefers-reduced-motion:reduce){
+  .js .card{transition:none}
+  .rat.walking .leg,.rat.walking .tail{animation:none}
+}
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough" x="-5%" y="-10%" width="110%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.7 1.3" result="speck"/>
+    <feComposite in="d" in2="speck" operator="in"/>
+  </filter>
+  <symbol id="spark" viewBox="0 0 20 20"><path d="M10 0 L11.6 8.4 L20 10 L11.6 11.6 L10 20 L8.4 11.6 L0 10 L8.4 8.4 Z"/></symbol>
+</svg>
+</head><body>
+<script>document.documentElement.classList.add("js")</script>
+
+<header class="head">
+  <div class="top"><a href="index.html">← aDiTrI</a><span>the route so far</span></div>
+  <div class="eyebrow"><svg class="star" width="0.8em" height="0.8em" aria-hidden="true"><use href="#spark"/></svg>journey</div>
+  <h1 class="rough" aria-label="The rat run"><span class="a">the</span> <span class="b">rat</span> <span class="c">run</span></h1>
+  <p class="lede">Delhi to Jersey City, one stop at a time. Every New York story has a rat in it — this one's mine.</p>
+  <p class="hint">↓ scroll to walk the route</p>
+</header>
+
+<main class="route" id="route">
+  <svg id="street" aria-hidden="true"></svg>
+  <div class="rat" id="rat" aria-hidden="true">
+    <svg viewBox="0 0 76 40">
+      <path class="tail" d="M16 22 C8 22 6 30 0 27" fill="none" stroke="var(--red)" stroke-width="2.4" stroke-linecap="round"/>
+      <g stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round">
+        <line class="leg l1" x1="24" y1="27" x2="24" y2="34"/>
+        <line class="leg l2" x1="30" y1="28" x2="30" y2="35"/>
+        <line class="leg l3" x1="44" y1="28" x2="44" y2="35"/>
+        <line class="leg l4" x1="50" y1="27" x2="50" y2="34"/>
+      </g>
+      <ellipse cx="36" cy="21" rx="21" ry="9.5" fill="var(--red)" stroke="var(--paper)" stroke-width="1.4"/>
+      <path d="M52 14 C60 15 68 18 74 21.5 C68 25 60 27 52 27 Z" fill="var(--red)" stroke="var(--paper)" stroke-width="1.4" stroke-linejoin="round"/>
+      <circle cx="54" cy="12" r="5" fill="var(--red)" stroke="var(--paper)" stroke-width="1.4"/>
+      <circle cx="54" cy="12" r="2.4" fill="#8f1d16"/>
+      <circle cx="62" cy="18.5" r="1.6" fill="var(--ink)"/>
+      <circle cx="74" cy="21.5" r="1.5" fill="var(--ink)"/>
+      <path d="M71 20 L76 16 M71 22 L77 23 M70 23.5 L75 27.5" stroke="var(--ink)" stroke-width=".6" fill="none"/>
+    </svg>
+  </div>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>1</b><span>Proof Pl &amp; Econ Ave</span></div>
+      <div class="body">
+        <h2>University of Delhi</h2>
+        <p class="role">B.S. Mathematics · minor in Economics</p>
+        <p class="txt">Where it starts: a math degree with economics on the side. Proofs first, markets later.</p>
+        <div class="tags"><span class="tag">Mathematics</span><span class="tag">Economics</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>2</b><span>Data St</span></div>
+      <div class="body">
+        <h2>OneMetric</h2>
+        <p class="role">Growth &amp; Data Analytics Intern</p>
+        <p class="txt">First time working on real business data — turning raw numbers into something a growth team could actually use.</p>
+        <div class="tags"><span class="tag">Analytics</span><span class="tag">Growth</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>3</b><span>Across the Atlantic</span><span class="when">Grad. Dec 2025</span></div>
+      <div class="body">
+        <h2>Rutgers Business School</h2>
+        <p class="role">M.S. Quantitative Finance</p>
+        <p class="txt">Moved to the New York area for a quant finance master's: derivatives, risk, and the math underneath them.</p>
+        <div class="tags"><span class="tag">Derivatives</span><span class="tag">Risk</span><span class="tag">Stochastic models</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>4</b><span>Research Row</span></div>
+      <div class="body">
+        <h2>Rutgers</h2>
+        <p class="role">Research Assistant</p>
+        <p class="txt">Derivatives, quantitative risk and model development — building models, then finding out where they break.</p>
+        <div class="tags"><span class="tag">Derivatives</span><span class="tag">Quant risk</span><span class="tag">Model development</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>5</b><span>Alpha Alley</span><span class="when">IQC 2024</span></div>
+      <div class="body">
+        <h2>WorldQuant BRAIN</h2>
+        <p class="role">Research Consultant</p>
+        <p class="txt">Systematic alpha research on the BRAIN platform. Finished in the top 1% globally in the International Quant Championship 2024.</p>
+        <div class="tags"><span class="tag">Alpha research</span><span class="tag">Top 1% · IQC 2024</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>6</b><span>Press St</span><span class="when">Jan 2026</span></div>
+      <div class="body">
+        <h2>First paper on arXiv</h2>
+        <p class="role">VaR &amp; Tail Risk Under Model Misspecification</p>
+        <p class="txt">What happens to VaR when the Gaussian model is wrong and the tails are Student-t. Importance sampling understated 99.5% VaR by up to 16.5%, so the paper reports bounds instead of a single number.</p>
+        <div class="tags"><a class="tag go" href="work-tail-risk.html">case study →</a><a class="tag go" href="https://arxiv.org/abs/2601.09927">arXiv:2601.09927 ↗</a></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>7</b><span>Workshop Way</span><span class="when">2026</span></div>
+      <div class="body">
+        <h2>The build year</h2>
+        <p class="role">Engines from first principles, then stress-tested</p>
+        <p class="txt">Pricing, risk and trading systems, each one built to be questioned: what it assumes, where it fails, and which number I'd defend.</p>
+        <div class="tags">
+          <a class="tag" href="work-ccr.html">counterparty credit risk</a>
+          <a class="tag" href="work-convertibles.html">convertible bonds</a>
+          <a class="tag" href="vol-surface.html">vol surfaces</a>
+          <a class="tag" href="work-vol-trading.html">vol forecasting</a>
+          <a class="tag" href="work-trading-analytics.html">sales &amp; trading analytics</a>
+          <a class="tag" href="work-prediction-markets.html">prediction markets</a>
+          <a class="tag" href="work-factor-index.html">factor index</a>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <div class="river" data-river><span>Hudson River · via PATH</span></div>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>8</b><span>You are here</span><span class="when">Now</span></div>
+      <div class="body">
+        <h2>Jersey City</h2>
+        <p class="role">Looking for the next desk</p>
+        <p class="txt">Just across the river from where I want to be. Open to roles in derivatives pricing, risk, and quant research — come say hi.</p>
+        <div class="tags"><a class="tag go" href="https://www.linkedin.com/in/aditriaditri">LinkedIn ↗</a><a class="tag go" href="https://github.com/Aditri-07">GitHub ↗</a><a class="tag go" href="index.html">← back home</a></div>
+      </div>
+    </article>
+  </section>
+
+  <p class="end">to be continued…</p>
+</main>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  const route=document.getElementById("route"), svg=document.getElementById("street"), rat=document.getElementById("rat");
+  const stops=[...route.querySelectorAll(".stop")];
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let path, walked, pins=[], total=0, anchors=[], cur=0, target=0, raf=0;
+
+  function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||svg).appendChild(e);return e}
+
+  function rounded(pts,r){
+    let d=`M${pts[0][0]},${pts[0][1]}`;
+    for(let i=1;i<pts.length-1;i++){
+      const [ax,ay]=pts[i-1],[bx,by]=pts[i],[cx,cy]=pts[i+1];
+      const l1=Math.hypot(bx-ax,by-ay), l2=Math.hypot(cx-bx,cy-by);
+      const rr=Math.min(r,l1/2,l2/2);
+      if(rr<1){d+=` L${bx},${by}`;continue}
+      const p1=[bx-(bx-ax)/l1*rr, by-(by-ay)/l1*rr], p2=[bx+(cx-bx)/l2*rr, by+(cy-by)/l2*rr];
+      d+=` L${p1[0]},${p1[1]} Q${bx},${by} ${p2[0]},${p2[1]}`;
+    }
+    const z=pts[pts.length-1]; d+=` L${z[0]},${z[1]}`;
+    return d;
+  }
+
+  function build(){
+    svg.innerHTML="";
+    const W=route.clientWidth, H=route.scrollHeight;
+    svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+    const narrow=W<760;
+    const pad=parseFloat(getComputedStyle(route).paddingLeft)||16;
+    const xs=stops.map((s,i)=>{
+      if(narrow) return pad+(i%2?30:14);
+      return i%2? W*0.76 : W*0.24;     // street runs on the side opposite the card
+    });
+    const ys=stops.map(s=>s.offsetTop+s.offsetHeight/2);
+    const bottoms=stops.map(s=>s.offsetTop+s.offsetHeight);
+    const pts=[[xs[0],24]];
+    stops.forEach((s,i)=>{
+      pts.push([xs[i],ys[i]]);
+      if(i<stops.length-1){
+        const ty=narrow? (bottoms[i]+stops[i+1].offsetTop)/2 : bottoms[i]-10;
+        pts.push([xs[i],ty],[xs[i+1],ty]);
+      }
+    });
+    const endY=H-40; pts.push([xs[xs.length-1],endY]);
+    // collapse colinear duplicates
+    const clean=pts.filter((p,i)=>!(i>0&&p[0]===pts[i-1][0]&&p[1]===pts[i-1][1]));
+    const d=rounded(clean,narrow?10:70);
+
+    el("path",{d,class:"curb"});
+    el("path",{d,class:"lane"});
+    walked=el("path",{d,class:"walked"});
+    path=walked;
+    total=path.getTotalLength();
+    walked.style.strokeDasharray=`${total} ${total}`;
+
+    const mh=el("g",{class:"manhole",transform:`translate(${xs[0]},24)`});
+    el("circle",{r:narrow?13:18},mh);
+    for(let k=-2;k<=2;k++) el("line",{x1:-12,x2:12,y1:k*5,y2:k*5},mh);
+
+    // length along the path at each stop centre
+    const samples=[]; for(let L=0;L<=total;L+=3){const p=path.getPointAtLength(L);samples.push([L,p.x,p.y])}
+    const lenAt=(x,y)=>{let best=0,bd=1e9;for(const s of samples){const dd=(s[1]-x)**2+(s[2]-y)**2;if(dd<bd){bd=dd;best=s[0]}}return best};
+    anchors=[[24,0]];
+    pins=[];
+    stops.forEach((s,i)=>{
+      const L=lenAt(xs[i],ys[i]); anchors.push([ys[i],L]);
+      const g=el("g",{class:"pin",transform:`translate(${xs[i]},${ys[i]})`});
+      el("circle",{r:narrow?12:19},g);
+      const t=el("text",{},g); t.textContent=i+1; if(narrow)t.style.fontSize="11px";
+      pins.push([g,L,s]);
+    });
+    anchors.push([endY,total]);
+    update(true);
+  }
+
+  function lengthForScroll(){
+    const rb=route.getBoundingClientRect();
+    const y=innerHeight*0.55-rb.top;  // the walker tracks a line just below mid-screen
+    if(y<=anchors[0][0]) return 0;
+    for(let i=1;i<anchors.length;i++){
+      const [y0,l0]=anchors[i-1],[y1,l1]=anchors[i];
+      if(y<=y1) return l0+(l1-l0)*(y-y0)/(y1-y0||1);
+    }
+    return total;
+  }
+
+  function place(L){
+    L=Math.max(0,Math.min(total,L));
+    const p=path.getPointAtLength(L), a=path.getPointAtLength(Math.max(0,L-2)), b=path.getPointAtLength(Math.min(total,L+2));
+    let ang=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+    const flip=Math.abs(ang)>90.5;
+    rat.style.transform=`translate(${p.x}px,${p.y}px) rotate(${ang}deg)${flip?" scaleY(-1)":""}`;
+    walked.style.strokeDashoffset=total-L;
+    pins.forEach(([g,pl,s])=>{const on=L>=pl-4;g.classList.toggle("on",on);s.classList.toggle("here",on||s.getBoundingClientRect().top<innerHeight*0.6)});
+  }
+
+  function tick(){
+    const diff=target-cur;
+    if(Math.abs(diff)<0.5||reduce){cur=target;place(cur);rat.classList.remove("walking");raf=0;return}
+    cur+=diff*0.12; place(cur); rat.classList.add("walking");
+    raf=requestAnimationFrame(tick);
+  }
+  function update(jump){
+    if(!path)return;
+    target=lengthForScroll();
+    if(jump){cur=target;place(cur);return}
+    if(!raf) raf=requestAnimationFrame(tick);
+  }
+
+  addEventListener("scroll",()=>update(false),{passive:true});
+  let rt; addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(build,120)});
+  (document.fonts?document.fonts.ready:Promise.resolve()).then(build);
+  build();
+})();
+</script>
+</body></html>
