@@ -1,0 +1,29 @@
+name: Invite me to a project
+description: An open-source project in pricing, risk, volatility or market structure that could use help.
+title: "Project: "
+labels: ["collab"]
+body:
+  - type: input
+    id: project
+    attributes:
+      label: Project link
+    validations:
+      required: true
+  - type: textarea
+    id: help
+    attributes:
+      label: What do you need help with?
+      description: The issue, module or question you have in mind.
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: How can I reach you?
+      description: Optional. This issue is public.
+  - type: checkboxes
+    id: board
+    attributes:
+      label: Show it on the site
+      options:
+        - label: OK to feature this on the Open Notebook page

@@ -1,0 +1,31 @@
+name: Pitch an idea
+description: A question, dataset, model or project you think Aditri should look at.
+title: "Idea: "
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for pitching in. Short is fine; a link to something worth reading is even better.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What's the idea?
+      description: What would you build, test or ask?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is it interesting?
+      description: Optional. Papers, data sources or prior work that help.
+  - type: input
+    id: contact
+    attributes:
+      label: How can I reach you?
+      description: Optional. GitHub is enough; add LinkedIn or a site if you like. This issue is public.
+  - type: checkboxes
+    id: board
+    attributes:
+      label: Show it on the site
+      options:
+        - label: OK to feature this on the Open Notebook page

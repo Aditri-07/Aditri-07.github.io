@@ -1,0 +1,29 @@
+name: Recommend a paper
+description: Something Aditri should be reading.
+title: "Paper: "
+labels: ["paper"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Paper title
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: arXiv, SSRN, journal or PDF.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why should I read it?
+      description: One or two sentences is plenty.
+  - type: checkboxes
+    id: board
+    attributes:
+      label: Show it on the site
+      options:
+        - label: OK to feature this on the Open Notebook page
