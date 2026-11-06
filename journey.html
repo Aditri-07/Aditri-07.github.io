@@ -93,6 +93,27 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 .river::before{top:0} .river::after{bottom:0;transform:scaleY(-1)}
 .river span{position:relative;z-index:2;font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;background:var(--paper);border:1px solid var(--ink);padding:5px 12px}
 
+/* globe: a sticky scene; scrolling turns the globe from Delhi to New York */
+.globe{position:relative;height:280vh;margin-top:10px}
+.g-stick{position:sticky;top:0;height:100vh;max-width:1180px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px)) 0 max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;gap:28px}
+.g-wrap{position:relative;width:min(100%,620px,82vh);aspect-ratio:1;justify-self:center;cursor:grab;touch-action:pan-y}
+.g-wrap:active{cursor:grabbing}
+#cobe{display:block;width:100%;height:100%;contain:layout paint size;opacity:0;transition:opacity .8s}
+#cobe.ready{opacity:1}
+.g-hint{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);pointer-events:none}
+.g-text{position:relative;min-height:240px}
+.g-chap{position:absolute;left:0;top:0;right:0;opacity:0;transform:translateY(18px);transition:opacity .45s,transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.g-chap.on{opacity:1;transform:none}
+.g-k{margin:0;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.g-chap h2{margin:6px 0 0;font-family:var(--display);font-weight:900;color:var(--red);font-size:clamp(46px,7vw,96px);line-height:.9;letter-spacing:-.02em}
+.g-chap p:last-child{margin:14px 0 0;font-size:clamp(16px,1.7vw,19px);line-height:1.5;max-width:34ch}
+@media (max-width:760px){
+  .g-stick{grid-template-columns:1fr;align-content:center;gap:8px}
+  .g-wrap{width:min(88vw,52vh)}
+  .g-text{min-height:190px}
+}
+@media (prefers-reduced-motion:reduce){.g-chap,#cobe{transition:none}}
+
 .end{position:relative;z-index:2;text-align:center;font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding-top:40px}
 
 @media (max-width:760px){
@@ -127,6 +148,20 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
   <p class="lede">Delhi to Jersey City, one stop at a time. Every New York story has a rat in it — this one's mine.</p>
   <p class="hint">↓ scroll to walk the route</p>
 </header>
+
+<section class="globe" id="globe" aria-label="From Delhi to New York">
+  <div class="g-stick">
+    <div class="g-wrap" id="gwrap">
+      <canvas id="cobe" role="img" aria-label="A dotted globe that turns from Delhi to New York as you scroll"></canvas>
+      <span class="g-hint">drag to spin</span>
+    </div>
+    <div class="g-text">
+      <div class="g-chap on" data-chap="0"><p class="g-k">Chapter one · 28.6° N, 77.2° E</p><h2 class="rough">Delhi</h2><p>A math degree and a Math Department internship. The first few years.</p></div>
+      <div class="g-chap" data-chap="1"><p class="g-k">In transit · ~11,750 km</p><h2 class="rough">Delhi → New York</h2><p>10½ hours behind, and somehow still up too late.</p></div>
+      <div class="g-chap" data-chap="2"><p class="g-k">Chapter two · 40.7° N, 74.0° W</p><h2 class="rough">New York</h2><p>Quant finance at Rutgers, research, and a lot of building. Now in Jersey City. Scroll down and follow the rat.</p></div>
+    </div>
+  </div>
+</section>
 
 <main class="route" id="route">
   <svg id="street" aria-hidden="true"></svg>
@@ -163,7 +198,18 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>2</b><span>Data St</span></div>
+      <div class="sign"><b>2</b><span>Dept. of Math Rd</span><span class="when">Dec 2022 – Jun 2023</span></div>
+      <div class="body">
+        <h2>Department of Mathematics</h2>
+        <p class="role">Intern · University of Delhi</p>
+        <div class="tags"><span class="tag">Mathematics</span><span class="tag">7 months</span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stop">
+    <article class="card">
+      <div class="sign"><b>3</b><span>Data St</span></div>
       <div class="body">
         <h2>OneMetric</h2>
         <p class="role">Growth &amp; Data Analytics Intern</p>
@@ -175,7 +221,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>3</b><span>Across the Atlantic</span><span class="when">Grad. Dec 2025</span></div>
+      <div class="sign"><b>4</b><span>Across the Atlantic</span><span class="when">Grad. Dec 2025</span></div>
       <div class="body">
         <h2>Rutgers Business School</h2>
         <p class="role">M.S. Quantitative Finance</p>
@@ -187,7 +233,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>4</b><span>Research Row</span></div>
+      <div class="sign"><b>5</b><span>Research Row</span></div>
       <div class="body">
         <h2>Rutgers</h2>
         <p class="role">Research Assistant</p>
@@ -199,7 +245,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>5</b><span>Alpha Alley</span><span class="when">IQC 2024</span></div>
+      <div class="sign"><b>6</b><span>Alpha Alley</span><span class="when">IQC 2024</span></div>
       <div class="body">
         <h2>WorldQuant BRAIN</h2>
         <p class="role">Research Consultant</p>
@@ -211,7 +257,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>6</b><span>Press St</span><span class="when">Jan 2026</span></div>
+      <div class="sign"><b>7</b><span>Press St</span><span class="when">Jan 2026</span></div>
       <div class="body">
         <h2>First paper on arXiv</h2>
         <p class="role">VaR &amp; Tail Risk Under Model Misspecification</p>
@@ -223,7 +269,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>7</b><span>Workshop Way</span><span class="when">2026</span></div>
+      <div class="sign"><b>8</b><span>Workshop Way</span><span class="when">2026</span></div>
       <div class="body">
         <h2>The build year</h2>
         <p class="role">Engines from first principles, then stress-tested</p>
@@ -245,7 +291,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>8</b><span>You are here</span><span class="when">Now</span></div>
+      <div class="sign"><b>9</b><span>You are here</span><span class="when">Now</span></div>
       <div class="body">
         <h2>Jersey City</h2>
         <p class="role">Looking for the next desk</p>
@@ -373,5 +419,61 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
   (document.fonts?document.fonts.ready:Promise.resolve()).then(build);
   build();
 })();
+</script>
+<script type="module">
+import createGlobe from "./cobe.js";
+const DEL=[28.6139,77.2090], NYC=[40.7128,-74.0060];
+const RED=[0.86,0.23,0.18];
+const ang=([lat,lon])=>[Math.PI-((lon*Math.PI)/180-Math.PI/2), lat*Math.PI/180];
+const [phD,thD]=ang(DEL), [phN,thN]=ang(NYC);
+const sec=document.getElementById("globe"), wrap=document.getElementById("gwrap"), cv=document.getElementById("cobe");
+const chaps=[...sec.querySelectorAll(".g-chap")];
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+let globe, size=0, dragPhi=0, dragTheta=0, down=null, visible=true, chap=-1;
+
+function make(){
+  const dpr=Math.min(2,devicePixelRatio||1);
+  size=wrap.clientWidth;
+  cv.width=size*dpr; cv.height=size*dpr;
+  if(globe) globe.destroy();
+  try{
+    globe=createGlobe(cv,{devicePixelRatio:dpr,width:size*dpr,height:size*dpr,phi:phD,theta:thD,
+      dark:0,diffuse:1.1,mapSamples:20000,mapBrightness:4.5,mapBaseBrightness:0,
+      baseColor:[0.93,0.92,0.9],markerColor:RED,glowColor:[0.86,0.85,0.83],
+      markers:[],arcs:[],arcColor:RED,arcWidth:0.9,arcHeight:0.32,markerElevation:0.015,scale:1});
+    cv.classList.add("ready");
+  }catch(e){wrap.style.display="none"}
+}
+function progress(){
+  const r=sec.getBoundingClientRect();
+  return Math.min(1,Math.max(0,-r.top/(r.height-innerHeight)));
+}
+function frame(){
+  requestAnimationFrame(frame);
+  if(!globe||!visible) return;
+  const p=progress();
+  const t=ease(Math.min(1,Math.max(0,(p-.28)/.42)));      // the turn happens in the middle of the scroll
+  if(!down){dragPhi*=.94; dragTheta*=.9}
+  const idle=reduce?0:Math.sin(performance.now()/2600)*0.04*(1-Math.abs(2*t-1)); // a little sway at rest
+  const phi=phD+(phN-phD)*t+dragPhi+idle;
+  const theta=thD+(thN-thD)*t+dragTheta*0.4;
+  const pulse=reduce?0:(Math.sin(performance.now()/380)+1)/2;
+  const markers=[
+    {location:DEL,size:t<.5?0.05+0.025*pulse:0.035},
+    {location:NYC,size:t>.5?0.05+0.025*pulse:0.035}
+  ];
+  const arcs=p>.22?[{from:DEL,to:NYC}]:[];
+  globe.update({phi,theta,markers,arcs});
+  const c=p<.3?0:p<.7?1:2;
+  if(c!==chap){chap=c;chaps.forEach((el,i)=>el.classList.toggle("on",i===c))}
+}
+wrap.addEventListener("pointerdown",e=>{down={x:e.clientX,y:e.clientY,p:dragPhi,t:dragTheta};wrap.setPointerCapture(e.pointerId)});
+wrap.addEventListener("pointermove",e=>{if(!down)return;dragPhi=down.p+(e.clientX-down.x)/size*3;dragTheta=Math.max(-.6,Math.min(.6,down.t+(e.clientY-down.y)/size*2))});
+const up=()=>{down=null};
+wrap.addEventListener("pointerup",up); wrap.addEventListener("pointercancel",up);
+new IntersectionObserver(es=>{visible=es[0].isIntersecting},{rootMargin:"200px"}).observe(sec);
+let rt; addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if(wrap.clientWidth!==size)make()},150)});
+make(); frame();
 </script>
 </body></html>
