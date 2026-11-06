@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Rat Run</title>
-<meta name="description" content="Aditri's route so far — Delhi to Jersey City, one stop at a time.">
+<meta name="description" content="Aditri's route so far: Delhi to Jersey City, one stop at a time.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,900&family=Archivo:wght@400;500;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
@@ -94,6 +94,24 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 .river span{position:relative;z-index:2;font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;background:var(--paper);border:1px solid var(--ink);padding:5px 12px}
 
 
+/* interaction */
+#street .pin{pointer-events:auto;cursor:inherit}
+#street .pin:hover circle,#street .pin:focus-visible circle{stroke:var(--red)}
+#street .pin:focus{outline:none}
+#street .pin:focus-visible circle{stroke-width:6}
+.rat{pointer-events:auto;cursor:inherit}
+.squeak{position:absolute;left:0;top:0;z-index:4;pointer-events:none;font-family:var(--mono);font-size:12px;line-height:1.35;white-space:nowrap;
+  background:var(--ink);color:var(--paper);padding:7px 11px;border-left:3px solid var(--red);transform:translate(-50%,calc(-100% - 34px));transition:opacity .2s}
+.squeak::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink)}
+.hop{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,0);z-index:20;display:flex;align-items:center;gap:2px;
+  background:var(--ink);color:var(--paper);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--red);font-family:var(--mono);font-size:12px;transition:opacity .25s,transform .25s;max-width:calc(100vw - 32px)}
+.hop[data-off]{opacity:0;transform:translate(-50%,16px);pointer-events:none}
+.hop button{appearance:none;border:0;background:none;color:var(--paper);font:inherit;font-size:15px;width:38px;height:36px;cursor:inherit}
+.hop button:hover{background:var(--red)}
+.hop button:disabled{opacity:.3;background:none}
+.hop span{padding:0 8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.04em}
+.hop b{color:var(--red);font-weight:500}
+
 .end{position:relative;z-index:2;text-align:center;font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding-top:40px}
 
 @media (max-width:760px){
@@ -125,8 +143,8 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
   <div class="top"><a href="index.html">← aDiTrI</a><span>the route so far</span></div>
   <div class="eyebrow"><svg class="star" width="0.8em" height="0.8em" aria-hidden="true"><use href="#spark"/></svg>journey</div>
   <h1 class="rough" aria-label="The rat run"><span class="a">the</span> <span class="b">rat</span> <span class="c">run</span></h1>
-  <p class="lede">Delhi to Jersey City, one stop at a time. Every New York story has a rat in it — this one's mine.</p>
-  <p class="hint">↓ scroll to walk the route</p>
+  <p class="lede">Delhi to Jersey City, one stop at a time. Every New York story has a rat in it. This one's mine.</p>
+  <p class="hint">↓ scroll to walk · tap a number to send the rat there · tap the rat</p>
 </header>
 
 <main class="route" id="route">
@@ -150,6 +168,8 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
     </svg>
   </div>
 
+  <div class="squeak" id="squeak" hidden></div>
+
   <section class="stop">
     <article class="card">
       <div class="sign"><b>1</b><span>Proof Pl &amp; Econ Ave</span></div>
@@ -164,7 +184,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <section class="stop">
     <article class="card">
-      <div class="sign"><b>2</b><span>Dept. of Math Rd</span><span class="when">Dec 2022 – Jun 2023</span></div>
+      <div class="sign"><b>2</b><span>Dept. of Math Rd</span><span class="when">Dec 2022 to Jun 2023</span></div>
       <div class="body">
         <h2>Department of Mathematics</h2>
         <p class="role">Intern · University of Delhi</p>
@@ -179,7 +199,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
       <div class="body">
         <h2>OneMetric</h2>
         <p class="role">Growth &amp; Data Analytics Intern</p>
-        <p class="txt">First time working on real business data — turning raw numbers into something a growth team could actually use.</p>
+        <p class="txt">First time working on real business data, turning raw numbers into something a growth team could actually use.</p>
         <div class="tags"><span class="tag">Analytics</span><span class="tag">Growth</span></div>
       </div>
     </article>
@@ -203,7 +223,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
       <div class="body">
         <h2>Rutgers</h2>
         <p class="role">Research Assistant</p>
-        <p class="txt">Derivatives, quantitative risk and model development — building models, then finding out where they break.</p>
+        <p class="txt">Derivatives, quantitative risk and model development. Building models, then finding out where they break.</p>
         <div class="tags"><span class="tag">Derivatives</span><span class="tag">Quant risk</span><span class="tag">Model development</span></div>
       </div>
     </article>
@@ -261,7 +281,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
       <div class="body">
         <h2>Jersey City</h2>
         <p class="role">Looking for the next desk</p>
-        <p class="txt">Just across the river from where I want to be. Open to roles in derivatives pricing, risk, and quant research — come say hi.</p>
+        <p class="txt">Just across the river from where I want to be. Open to roles in derivatives pricing, risk, and quant research. Come say hi.</p>
         <div class="tags"><a class="tag go" href="https://www.linkedin.com/in/aditriaditri">LinkedIn ↗</a><a class="tag go" href="https://github.com/Aditri-07">GitHub ↗</a><a class="tag go" href="index.html">← back home</a></div>
       </div>
     </article>
@@ -269,6 +289,7 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
 
   <p class="end">to be continued…</p>
 </main>
+<nav class="hop" id="hop" aria-label="Jump between stops" data-off><button type="button" id="prev" aria-label="Previous stop">↑</button><span id="hopLabel" aria-live="polite"></span><button type="button" id="next" aria-label="Next stop">↓</button></nav>
 
 <script>
 (function(){
@@ -337,12 +358,15 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
     pins=[];
     stops.forEach((s,i)=>{
       const L=lenAt(xs[i],ys[i]); anchors.push([ys[i],L]);
-      const g=el("g",{class:"pin",transform:`translate(${xs[i]},${ys[i]})`});
+      const g=el("g",{class:"pin",transform:`translate(${xs[i]},${ys[i]})`,tabindex:"0",role:"button","aria-label":`Go to stop ${i+1}: ${names[i]}`});
+      g.addEventListener("click",()=>goTo(i));
+      g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goTo(i)}});
       el("circle",{r:narrow?12:19},g);
       const t=el("text",{},g); t.textContent=i+1; if(narrow)t.style.fontSize="11px";
       pins.push([g,L,s]);
     });
     anchors.push([endY,total]);
+    stopY=ys;
     update(true);
   }
 
@@ -364,7 +388,11 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
     const flip=Math.abs(ang)>90.5;
     rat.style.transform=`translate(${p.x}px,${p.y}px) rotate(${ang}deg)${flip?" scaleY(-1)":""}`;
     walked.style.strokeDashoffset=total-L;
-    pins.forEach(([g,pl,s])=>{const on=L>=pl-4;g.classList.toggle("on",on);s.classList.toggle("here",on||s.getBoundingClientRect().top<innerHeight*0.6)});
+    let at=-1;
+    pins.forEach(([g,pl,s],i)=>{const on=L>=pl-4;if(on)at=i;g.classList.toggle("on",on);s.classList.toggle("here",on||s.getBoundingClientRect().top<innerHeight*0.6)});
+    ratXY=[p.x,p.y];
+    if(!sq.hidden) posSq();
+    setHop(at,L);
   }
 
   function tick(){
@@ -379,6 +407,40 @@ a.tag.go:hover{background:var(--red);color:var(--paper)}
     if(jump){cur=target;place(cur);return}
     if(!raf) raf=requestAnimationFrame(tick);
   }
+
+  // jump between stops
+  const names=stops.map(s=>s.querySelector("h2").textContent.trim());
+  const hop=document.getElementById("hop"), hopLabel=document.getElementById("hopLabel"), prev=document.getElementById("prev"), next=document.getElementById("next");
+  let stopY=[], here=-2;
+  function goTo(i){
+    i=Math.max(0,Math.min(stops.length-1,i));
+    const top=route.getBoundingClientRect().top+scrollY+stopY[i]-innerHeight*0.55;
+    scrollTo({top,behavior:reduce?"auto":"smooth"});
+  }
+  function setHop(at,L){
+    if(L>2||scrollY>200) hop.removeAttribute("data-off"); else hop.setAttribute("data-off","");
+    if(at===here) return; here=at;
+    hopLabel.innerHTML=at<0?"<b>Start</b> · manhole":`<b>${at+1}/${stops.length}</b> · ${names[at]}`;
+    prev.disabled=at<=0; next.disabled=at>=stops.length-1;
+  }
+  prev.addEventListener("click",()=>goTo(here-1));
+  next.addEventListener("click",()=>goTo(here+1));
+  addEventListener("keydown",e=>{
+    if(e.target.closest("input,textarea")||e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key==="ArrowRight"||e.key==="j"){e.preventDefault();goTo(here+1)}
+    if(e.key==="ArrowLeft"||e.key==="k"){e.preventDefault();goTo(here-1)}
+  });
+
+  // tap the rat
+  const sq=document.getElementById("squeak");
+  const lines=["Squeak.","Pizza Rat's quant cousin.","I take the PATH too.","Keep scrolling, rent is due.","I've seen worse models.","Mind the gap. Not the bid-ask one."];
+  let ratXY=[0,0], li=0, sqT;
+  function posSq(){const half=sq.offsetWidth/2+4;sq.style.left=Math.max(half,ratXY[0])+"px";sq.style.top=ratXY[1]+"px"}
+  rat.addEventListener("click",()=>{
+    sq.textContent=lines[li++%lines.length];
+    sq.hidden=false; posSq();
+    clearTimeout(sqT); sqT=setTimeout(()=>{sq.hidden=true},1800);
+  });
 
   addEventListener("scroll",()=>update(false),{passive:true});
   let rt; addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(build,120)});
